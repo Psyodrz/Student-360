@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: student360-api
+    runtime: python
+    rootDir: backend
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        value: sqlite:///./student360.db
+      - key: ATTENDANCE_THRESHOLD
+        value: 75.0
+      - key: ACADEMIC_THRESHOLD
+        value: 60.0
+      - key: RISK_WEIGHT_ATTENDANCE
+        value: 0.35
+      - key: RISK_WEIGHT_ASSIGNMENT
+        value: 0.25
+      - key: RISK_WEIGHT_ACADEMIC
+        value: 0.40
