@@ -12,3 +12,4 @@ Live web application for student retention, deterministic mathematical risk mode
 
 - **GitHub Repository**: [Psyodrz/Student-360](https://github.com/Psyodrz/Student-360)
 - **Interactive ZeroGPU Space**: [ganduyadav/student360](https://huggingface.co/spaces/ganduyadav/student360)
+

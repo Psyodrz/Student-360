@@ -596,5 +596,44 @@ with gr.Blocks(title="Student360 — Academic Early-Warning Platform") as demo:
             *Open-source repository available on GitHub: [Psyodrz/Student-360](https://github.com/Psyodrz/Student-360)*
             """)
 
+from fastapi.middleware.cors import CORSMiddleware
+from app.routers import (
+    auth_router,
+    students_router,
+    academic_router,
+    risk_router,
+    intervention_router,
+    analytics_router,
+    cms_router,
+)
+from app.database import engine, SessionLocal, Base
+from app.seed import seed_database
+
+# Initialize database schema and initial seed data
+Base.metadata.create_all(bind=engine)
+_db = SessionLocal()
+try:
+    seed_database(_db)
+except Exception as _e:
+    print(f"Seed note: {_e}")
+finally:
+    _db.close()
+
+# Attach all FastAPI backend endpoints to demo.app
+demo.app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+demo.app.include_router(auth_router.router)
+demo.app.include_router(students_router.router)
+demo.app.include_router(academic_router.router)
+demo.app.include_router(risk_router.router)
+demo.app.include_router(intervention_router.router)
+demo.app.include_router(analytics_router.router)
+demo.app.include_router(cms_router.router)
+
 if __name__ == "__main__":
     demo.launch(mcp_server=True)

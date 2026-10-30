@@ -15,7 +15,8 @@ import {
   FileSpreadsheet,
   AlertCircle,
   CheckCircle2,
-  X
+  X,
+  Sparkles
 } from 'lucide-react';
 
 export default function StudentsPage() {
@@ -105,10 +106,10 @@ export default function StudentsPage() {
         email: formData.email,
         department_id: Number(formData.department_id),
         semester: Number(formData.semester),
-        phone: formData.phone,
+        admission_year: Number(formData.admission_year),
+        phone: formData.phone || null,
       });
       setIsEditOpen(false);
-      setCurrentStudent(null);
       fetchStudents();
     } catch (err: any) {
       alert(err.response?.data?.detail || 'Failed to update student');
@@ -116,7 +117,7 @@ export default function StudentsPage() {
   };
 
   const handleDeleteStudent = async (id: number, name: string) => {
-    if (!window.confirm(`Are you sure you want to permanently remove student "${name}"?`)) return;
+    if (!window.confirm(`Are you sure you want to remove student "${name}" from the system?`)) return;
     try {
       await studentsAPI.delete(id);
       fetchStudents();
@@ -160,23 +161,23 @@ export default function StudentsPage() {
   const getRiskBadge = (category?: string, score?: number) => {
     if (category === 'High') {
       return (
-        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-risk-100 text-risk-800 border border-risk-200">
-          <span className="w-1.5 h-1.5 rounded-full bg-risk-600 animate-pulse" />
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#FEE2E2] text-[#DC2626] border border-[#FCA5A5] font-mono">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#DC2626] animate-pulse" />
           High ({score ?? '—'})
         </span>
       );
     }
     if (category === 'Medium') {
       return (
-        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-academic-100 text-academic-800 border border-academic-300">
-          <span className="w-1.5 h-1.5 rounded-full bg-academic-600" />
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#FEF3C7] text-[#B45309] border border-[#FCD34D] font-mono">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#D97706]" />
           Medium ({score ?? '—'})
         </span>
       );
     }
     return (
-      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-stable-100 text-stable-800 border border-stable-200">
-        <span className="w-1.5 h-1.5 rounded-full bg-stable-600" />
+      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#DCFCE7] text-[#15803D] border border-[#86EFAC] font-mono">
+        <span className="w-1.5 h-1.5 rounded-full bg-[#16A34A]" />
         Low ({score ?? '—'})
       </span>
     );
@@ -186,13 +187,18 @@ export default function StudentsPage() {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-slate-200">
+      
+      {/* 🌟 Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-[#EADFD4]">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+          <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full border border-[#D8CEBE] bg-[#F4EAE1] text-[10px] uppercase tracking-widest text-[#5C4F43] font-bold mb-1.5">
+            <Sparkles className="w-3 h-3 text-amber-600" />
+            <span>COHORT DIRECTORY</span>
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-[#2C2621]">
             Students Directory
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-[#7A6D61] mt-0.5">
             Complete institutional enrollment register and individual academic telemetry
           </p>
         </div>
@@ -219,16 +225,16 @@ export default function StudentsPage() {
         </div>
       </div>
 
-      {/* Filter and Search Bar */}
-      <div className="card-surface p-4 flex flex-col md:flex-row items-stretch md:items-center gap-3">
+      {/* 🌟 Filter and Search Bar (Porcelain Card) */}
+      <div className="rounded-2xl sm:rounded-3xl bg-[#F6EDE6] border border-[#EADFD4] p-4 flex flex-col md:flex-row items-stretch md:items-center gap-3 shadow-xs">
         <div className="relative flex-1">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#8C7D70]" />
           <input
             type="text"
             placeholder="Search by student name, enrollment no, or email..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-xs border border-slate-300 rounded-md focus:ring-1 focus:ring-oxford-800 focus:border-oxford-800 placeholder-slate-400"
+            className="w-full pl-10 pr-4 py-2 text-xs bg-white/90 border border-[#DACFBF] rounded-xl text-[#2C2621] placeholder-[#A69788] focus:outline-none focus:ring-2 focus:ring-[#8E7B68] transition-all"
           />
         </div>
 
@@ -236,7 +242,7 @@ export default function StudentsPage() {
           <select
             value={selectedDept}
             onChange={(e) => setSelectedDept(e.target.value)}
-            className="text-xs border border-slate-300 rounded-md py-2 px-2.5 bg-white text-slate-700 focus:ring-1 focus:ring-oxford-800"
+            className="text-xs border border-[#DACFBF] rounded-xl py-2 px-3 bg-white/90 text-[#2C2621] font-medium focus:ring-2 focus:ring-[#8E7B68]"
           >
             <option value="">All Departments</option>
             {departments.map((d) => (
@@ -247,7 +253,7 @@ export default function StudentsPage() {
           <select
             value={selectedSemester}
             onChange={(e) => setSelectedSemester(e.target.value)}
-            className="text-xs border border-slate-300 rounded-md py-2 px-2.5 bg-white text-slate-700 focus:ring-1 focus:ring-oxford-800"
+            className="text-xs border border-[#DACFBF] rounded-xl py-2 px-3 bg-white/90 text-[#2C2621] font-medium focus:ring-2 focus:ring-[#8E7B68]"
           >
             <option value="">All Semesters</option>
             {[1, 2, 3, 4, 5, 6, 7, 8].map((s) => (
@@ -258,7 +264,7 @@ export default function StudentsPage() {
           <select
             value={selectedRisk}
             onChange={(e) => setSelectedRisk(e.target.value)}
-            className="text-xs border border-slate-300 rounded-md py-2 px-2.5 bg-white text-slate-700 focus:ring-1 focus:ring-oxford-800"
+            className="text-xs border border-[#DACFBF] rounded-xl py-2 px-3 bg-white/90 text-[#2C2621] font-medium focus:ring-2 focus:ring-[#8E7B68]"
           >
             <option value="">All Risk Tiers</option>
             <option value="High">High Risk</option>
@@ -274,7 +280,7 @@ export default function StudentsPage() {
                 setSelectedSemester('');
                 setSelectedRisk('');
               }}
-              className="text-xs text-slate-500 hover:text-slate-800 px-2 py-1 font-medium"
+              className="text-xs text-[#7A6D61] hover:text-[#2C2621] px-2.5 py-1.5 font-bold underline"
             >
               Clear
             </button>
@@ -282,12 +288,12 @@ export default function StudentsPage() {
         </div>
       </div>
 
-      {/* Students Data Table */}
-      <div className="card-surface overflow-hidden">
+      {/* 🌟 Students Data Table (Warm Porcelain Style) */}
+      <div className="rounded-3xl bg-[#F6EDE6] border border-[#EADFD4] overflow-hidden shadow-xs">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
-              <tr className="border-b border-slate-200 text-slate-500 font-semibold uppercase tracking-wider bg-slate-50/80">
+              <tr className="border-b border-[#EADFD4] text-[#7A6D61] font-bold uppercase tracking-wider bg-white/40">
                 <th className="py-3 px-4">Enrollment No</th>
                 <th className="py-3 px-4">Student Name</th>
                 <th className="py-3 px-4">Department</th>
@@ -296,17 +302,17 @@ export default function StudentsPage() {
                 <th className="py-3 px-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-[#EADFD4]/60">
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="py-12 text-center text-slate-400">
-                    <div className="inline-block w-6 h-6 border-2 border-slate-300 border-t-oxford-800 rounded-full animate-spin mb-2" />
+                  <td colSpan={6} className="py-12 text-center text-[#8C7D70]">
+                    <div className="inline-block w-6 h-6 border-2 border-[#8C7D70] border-t-[#2C2621] rounded-full animate-spin mb-2" />
                     <div>Loading student records...</div>
                   </td>
                 </tr>
               ) : students.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="py-12 text-center text-slate-400">
+                  <td colSpan={6} className="py-12 text-center text-[#8C7D70]">
                     No students found matching current filters.
                   </td>
                 </tr>
@@ -314,32 +320,32 @@ export default function StudentsPage() {
                 students.map((student) => (
                   <tr
                     key={student.id}
-                    className="hover:bg-slate-50/80 transition-colors group cursor-pointer"
+                    className="hover:bg-white/60 transition-colors group cursor-pointer"
                     onClick={() => navigate(`/students/${student.id}`)}
                   >
-                    <td className="py-3 px-4 font-mono font-medium text-slate-900">
+                    <td className="py-3.5 px-4 font-mono font-bold text-[#2C2621]">
                       {student.enrollment_no}
                     </td>
-                    <td className="py-3 px-4">
-                      <div className="font-semibold text-slate-800 group-hover:text-academic-700 transition-colors">
+                    <td className="py-3.5 px-4">
+                      <div className="font-bold text-[#2C2621] group-hover:text-amber-800 transition-colors">
                         {student.full_name}
                       </div>
-                      <div className="text-[11px] text-slate-400">{student.email}</div>
+                      <div className="text-[11px] text-[#7A6D61]">{student.email}</div>
                     </td>
-                    <td className="py-3 px-4 text-slate-700">
+                    <td className="py-3.5 px-4 text-[#5C4F43] font-medium">
                       {student.department_name || `Dept #${student.department_id}`}
                     </td>
-                    <td className="py-3 px-4 text-center font-medium text-slate-700">
+                    <td className="py-3.5 px-4 text-center font-bold text-[#2C2621]">
                       Sem {student.semester}
                     </td>
-                    <td className="py-3 px-4 text-center">
+                    <td className="py-3.5 px-4 text-center">
                       {getRiskBadge(student.risk_category, student.risk_score)}
                     </td>
-                    <td className="py-3 px-4 text-right" onClick={(e) => e.stopPropagation()}>
+                    <td className="py-3.5 px-4 text-right" onClick={(e) => e.stopPropagation()}>
                       <div className="flex items-center justify-end gap-1.5">
                         <button
                           onClick={() => navigate(`/students/${student.id}`)}
-                          className="px-2.5 py-1 text-xs font-semibold rounded bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
+                          className="px-3 py-1 text-xs font-bold rounded-xl bg-white hover:bg-[#F2ECE3] border border-[#DACFBF] text-[#2C2621] transition-all shadow-2xs"
                         >
                           View 360
                         </button>
@@ -348,14 +354,14 @@ export default function StudentsPage() {
                             <button
                               onClick={() => openEditModal(student)}
                               title="Edit"
-                              className="p-1 rounded text-slate-400 hover:text-slate-800 hover:bg-slate-100"
+                              className="p-1.5 rounded-lg text-[#8C7D70] hover:text-[#2C2621] hover:bg-white"
                             >
                               <Edit className="w-3.5 h-3.5" />
                             </button>
                             <button
                               onClick={() => handleDeleteStudent(student.id, student.full_name)}
                               title="Delete"
-                              className="p-1 rounded text-slate-400 hover:text-risk-600 hover:bg-risk-50"
+                              className="p-1.5 rounded-lg text-[#8C7D70] hover:text-[#DC2626] hover:bg-white"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>
@@ -371,105 +377,105 @@ export default function StudentsPage() {
         </div>
       </div>
 
-      {/* Add Student Modal */}
+      {/* 🌟 Add Student Modal */}
       {isAddOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs">
-          <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 border border-slate-200">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
-              <h2 className="text-base font-bold text-slate-900">Enroll New Student</h2>
-              <button onClick={() => setIsAddOpen(false)} className="text-slate-400 hover:text-slate-700">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
+          <div className="bg-[#F6EDE6] rounded-3xl shadow-2xl max-w-lg w-full p-6 sm:p-8 border border-white/60 animate-scale-in text-[#2C2621]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#EADFD4]">
+              <h2 className="text-base font-bold text-[#2C2621]">Enroll New Student</h2>
+              <button onClick={() => setIsAddOpen(false)} className="text-[#8C7D70] hover:text-[#2C2621]">
                 <X className="w-5 h-5" />
               </button>
             </div>
             <form onSubmit={handleCreateStudent} className="space-y-4 mt-4 text-xs">
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Enrollment Number *</label>
+                <label className="block font-bold text-[#5C4F43] uppercase tracking-wider mb-1">Enrollment Number *</label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. CS24001"
+                  placeholder="e.g. CS-2024-001"
                   value={formData.enrollment_no}
-                  onChange={(e) => setFormData({ ...formData, enrollment_no: e.target.value })}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-1 focus:ring-oxford-800"
+                  onChange={(e) => setFormData({ ...formData, enrollment_no: e.target.value.toUpperCase() })}
+                  className="w-full px-3.5 py-2.5 bg-white border border-[#DACFBF] rounded-xl font-mono text-[#2C2621] focus:ring-2 focus:ring-[#8E7B68]"
                 />
               </div>
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Full Legal Name *</label>
+                <label className="block font-bold text-[#5C4F43] uppercase tracking-wider mb-1">Full Legal Name *</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Aryan Mehra"
                   value={formData.full_name}
                   onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-1 focus:ring-oxford-800"
+                  className="w-full px-3.5 py-2.5 bg-white border border-[#DACFBF] rounded-xl text-[#2C2621] focus:ring-2 focus:ring-[#8E7B68]"
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Institutional Email *</label>
+                  <label className="block font-bold text-[#5C4F43] uppercase tracking-wider mb-1">Institutional Email *</label>
                   <input
                     type="email"
                     required
-                    placeholder="aryan.mehra@student360.edu"
+                    placeholder="aryan.mehra@apex.edu"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-1 focus:ring-oxford-800"
+                    className="w-full px-3.5 py-2.5 bg-white border border-[#DACFBF] rounded-xl text-[#2C2621] focus:ring-2 focus:ring-[#8E7B68]"
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Contact Phone</label>
+                  <label className="block font-bold text-[#5C4F43] uppercase tracking-wider mb-1">Contact Phone</label>
                   <input
                     type="text"
                     placeholder="+91 98765 43210"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-1 focus:ring-oxford-800"
+                    className="w-full px-3.5 py-2.5 bg-white border border-[#DACFBF] rounded-xl text-[#2C2621] focus:ring-2 focus:ring-[#8E7B68]"
                   />
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Department *</label>
+                  <label className="block font-bold text-[#5C4F43] uppercase tracking-wider mb-1">Department *</label>
                   <select
                     required
                     value={formData.department_id}
                     onChange={(e) => setFormData({ ...formData, department_id: e.target.value })}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md bg-white focus:ring-1 focus:ring-oxford-800"
+                    className="w-full px-3 py-2.5 bg-white border border-[#DACFBF] rounded-xl text-[#2C2621] focus:ring-2 focus:ring-[#8E7B68]"
                   >
-                    <option value="">Select Dept</option>
+                    <option value="">Select</option>
                     {departments.map((d) => (
                       <option key={d.id} value={d.id}>{d.name} ({d.code})</option>
                     ))}
                   </select>
                 </div>
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Semester *</label>
+                  <label className="block font-bold text-[#5C4F43] uppercase tracking-wider mb-1">Semester *</label>
                   <select
                     value={formData.semester}
                     onChange={(e) => setFormData({ ...formData, semester: Number(e.target.value) })}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md bg-white focus:ring-1 focus:ring-oxford-800"
+                    className="w-full px-3 py-2.5 bg-white border border-[#DACFBF] rounded-xl text-[#2C2621] focus:ring-2 focus:ring-[#8E7B68]"
                   >
                     {[1, 2, 3, 4, 5, 6, 7, 8].map((s) => (
-                      <option key={s} value={s}>Semester {s}</option>
+                      <option key={s} value={s}>Sem {s}</option>
                     ))}
                   </select>
                 </div>
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Admission Year *</label>
+                  <label className="block font-bold text-[#5C4F43] uppercase tracking-wider mb-1">Admission Year *</label>
                   <input
                     type="number"
                     value={formData.admission_year}
                     onChange={(e) => setFormData({ ...formData, admission_year: Number(e.target.value) })}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-1 focus:ring-oxford-800"
+                    className="w-full px-3 py-2.5 bg-white border border-[#DACFBF] rounded-xl text-[#2C2621] focus:ring-2 focus:ring-[#8E7B68]"
                   />
                 </div>
               </div>
-              <div className="flex justify-end gap-2 pt-4 border-t border-slate-200">
+              <div className="flex justify-end gap-2 pt-4 border-t border-[#EADFD4]">
                 <button type="button" onClick={() => setIsAddOpen(false)} className="btn-secondary">
                   Cancel
                 </button>
                 <button type="submit" className="btn-primary">
-                  Save Student
+                  Enroll Student
                 </button>
               </div>
             </form>
@@ -477,64 +483,64 @@ export default function StudentsPage() {
         </div>
       )}
 
-      {/* Edit Student Modal */}
+      {/* 🌟 Edit Student Modal */}
       {isEditOpen && currentStudent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs">
-          <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 border border-slate-200">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
-              <h2 className="text-base font-bold text-slate-900">Edit Student Record</h2>
-              <button onClick={() => setIsEditOpen(false)} className="text-slate-400 hover:text-slate-700">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
+          <div className="bg-[#F6EDE6] rounded-3xl shadow-2xl max-w-lg w-full p-6 sm:p-8 border border-white/60 animate-scale-in text-[#2C2621]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#EADFD4]">
+              <h2 className="text-base font-bold text-[#2C2621]">Edit Student Record</h2>
+              <button onClick={() => setIsEditOpen(false)} className="text-[#8C7D70] hover:text-[#2C2621]">
                 <X className="w-5 h-5" />
               </button>
             </div>
             <form onSubmit={handleUpdateStudent} className="space-y-4 mt-4 text-xs">
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Enrollment (Immutable)</label>
+                <label className="block font-bold text-[#5C4F43] uppercase tracking-wider mb-1">Enrollment (Immutable)</label>
                 <input
                   type="text"
                   disabled
                   value={formData.enrollment_no}
-                  className="w-full px-3 py-2 border border-slate-200 bg-slate-100 rounded-md text-slate-500 font-mono"
+                  className="w-full px-3.5 py-2.5 bg-[#EAE2D7] border border-[#DACFBF] rounded-xl font-mono text-[#5C4F43]"
                 />
               </div>
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Full Legal Name *</label>
+                <label className="block font-bold text-[#5C4F43] uppercase tracking-wider mb-1">Full Legal Name *</label>
                 <input
                   type="text"
                   required
                   value={formData.full_name}
                   onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-1 focus:ring-oxford-800"
+                  className="w-full px-3.5 py-2.5 bg-white border border-[#DACFBF] rounded-xl text-[#2C2621] focus:ring-2 focus:ring-[#8E7B68]"
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Institutional Email *</label>
+                  <label className="block font-bold text-[#5C4F43] uppercase tracking-wider mb-1">Institutional Email *</label>
                   <input
                     type="email"
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-1 focus:ring-oxford-800"
+                    className="w-full px-3.5 py-2.5 bg-white border border-[#DACFBF] rounded-xl text-[#2C2621] focus:ring-2 focus:ring-[#8E7B68]"
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Contact Phone</label>
+                  <label className="block font-bold text-[#5C4F43] uppercase tracking-wider mb-1">Contact Phone</label>
                   <input
                     type="text"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-1 focus:ring-oxford-800"
+                    className="w-full px-3.5 py-2.5 bg-white border border-[#DACFBF] rounded-xl text-[#2C2621] focus:ring-2 focus:ring-[#8E7B68]"
                   />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Department</label>
+                  <label className="block font-bold text-[#5C4F43] uppercase tracking-wider mb-1">Department</label>
                   <select
                     value={formData.department_id}
                     onChange={(e) => setFormData({ ...formData, department_id: e.target.value })}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md bg-white focus:ring-1 focus:ring-oxford-800"
+                    className="w-full px-3 py-2.5 bg-white border border-[#DACFBF] rounded-xl text-[#2C2621] focus:ring-2 focus:ring-[#8E7B68]"
                   >
                     {departments.map((d) => (
                       <option key={d.id} value={d.id}>{d.name} ({d.code})</option>
@@ -542,24 +548,24 @@ export default function StudentsPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Semester</label>
+                  <label className="block font-bold text-[#5C4F43] uppercase tracking-wider mb-1">Semester</label>
                   <select
                     value={formData.semester}
                     onChange={(e) => setFormData({ ...formData, semester: Number(e.target.value) })}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md bg-white focus:ring-1 focus:ring-oxford-800"
+                    className="w-full px-3 py-2.5 bg-white border border-[#DACFBF] rounded-xl text-[#2C2621] focus:ring-2 focus:ring-[#8E7B68]"
                   >
                     {[1, 2, 3, 4, 5, 6, 7, 8].map((s) => (
-                      <option key={s} value={s}>Semester {s}</option>
+                      <option key={s} value={s}>Sem {s}</option>
                     ))}
                   </select>
                 </div>
               </div>
-              <div className="flex justify-end gap-2 pt-4 border-t border-slate-200">
+              <div className="flex justify-end gap-2 pt-4 border-t border-[#EADFD4]">
                 <button type="button" onClick={() => setIsEditOpen(false)} className="btn-secondary">
                   Cancel
                 </button>
                 <button type="submit" className="btn-primary">
-                  Update Record
+                  Update Dossier
                 </button>
               </div>
             </form>
@@ -567,26 +573,26 @@ export default function StudentsPage() {
         </div>
       )}
 
-      {/* CSV Import Modal */}
+      {/* 🌟 CSV Bulk Ingestion Modal */}
       {isImportOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs">
-          <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 border border-slate-200">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
+          <div className="bg-[#F6EDE6] rounded-3xl shadow-2xl max-w-lg w-full p-6 sm:p-8 border border-white/60 animate-scale-in text-[#2C2621]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#EADFD4]">
               <div className="flex items-center gap-2">
-                <FileSpreadsheet className="w-4 h-4 text-oxford-800" />
-                <h2 className="text-base font-bold text-slate-900">Bulk Academic CSV Ingestion</h2>
+                <FileSpreadsheet className="w-5 h-5 text-amber-700" />
+                <h2 className="text-base font-bold text-[#2C2621]">Bulk Academic CSV Ingestion</h2>
               </div>
-              <button onClick={() => { setIsImportOpen(false); setImportResult(null); }} className="text-slate-400 hover:text-slate-700">
+              <button onClick={() => { setIsImportOpen(false); setImportResult(null); }} className="text-[#8C7D70] hover:text-[#2C2621]">
                 <X className="w-5 h-5" />
               </button>
             </div>
             <form onSubmit={handleImportCSV} className="space-y-4 mt-4 text-xs">
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Record Type *</label>
+                <label className="block font-bold text-[#5C4F43] uppercase tracking-wider mb-1">Record Type *</label>
                 <select
                   value={importType}
                   onChange={(e) => setImportType(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md bg-white focus:ring-1 focus:ring-oxford-800"
+                  className="w-full px-3 py-2.5 bg-white border border-[#DACFBF] rounded-xl text-[#2C2621] focus:ring-2 focus:ring-[#8E7B68]"
                 >
                   <option value="attendance">Class Attendance (enrollment_no, subject_code, date, status)</option>
                   <option value="assignments">Assignments (enrollment_no, subject_code, title, due_date, submitted, score)</option>
@@ -595,25 +601,25 @@ export default function StudentsPage() {
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Select CSV File *</label>
+                <label className="block font-bold text-[#5C4F43] uppercase tracking-wider mb-1">Select CSV File *</label>
                 <input
                   type="file"
                   required
                   accept=".csv"
                   onChange={(e) => setImportFile(e.target.files?.[0] || null)}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md text-xs focus:outline-none"
+                  className="w-full px-3 py-2.5 bg-white border border-[#DACFBF] rounded-xl text-[#2C2621] focus:outline-none"
                 />
               </div>
 
               {importResult && (
-                <div className={`p-3 rounded-md text-xs ${importResult.success ? 'bg-stable-50 border border-stable-200 text-stable-800' : 'bg-risk-50 border border-risk-200 text-risk-800'}`}>
+                <div className={`p-4 rounded-2xl text-xs ${importResult.success ? 'bg-[#DCFCE7] border border-[#86EFAC] text-[#15803D]' : 'bg-[#FEE2E2] border border-[#FCA5A5] text-[#991B1B]'}`}>
                   <div className="flex items-center gap-1.5 font-bold mb-1">
-                    {importResult.success ? <CheckCircle2 className="w-4 h-4 text-stable-600" /> : <AlertCircle className="w-4 h-4 text-risk-600" />}
+                    {importResult.success ? <CheckCircle2 className="w-4 h-4 text-[#16A34A]" /> : <AlertCircle className="w-4 h-4 text-[#DC2626]" />}
                     <span>{importResult.success ? 'Ingestion Successful' : 'Ingestion Completed with Errors'}</span>
                   </div>
-                  <p>Records Imported: <span className="font-semibold">{importResult.records_imported}</span></p>
+                  <p>Records Imported: <span className="font-mono font-bold">{importResult.records_imported}</span></p>
                   {importResult.errors?.length > 0 && (
-                    <ul className="mt-1 list-disc list-inside space-y-0.5 text-[11px] text-risk-700">
+                    <ul className="mt-1 list-disc list-inside space-y-0.5 text-[11px]">
                       {importResult.errors.map((err: string, i: number) => (
                         <li key={i}>{err}</li>
                       ))}
@@ -622,7 +628,7 @@ export default function StudentsPage() {
                 </div>
               )}
 
-              <div className="flex justify-end gap-2 pt-4 border-t border-slate-200">
+              <div className="flex justify-end gap-2 pt-4 border-t border-[#EADFD4]">
                 <button type="button" onClick={() => { setIsImportOpen(false); setImportResult(null); }} className="btn-secondary">
                   Close
                 </button>
@@ -637,4 +643,3 @@ export default function StudentsPage() {
     </div>
   );
 }
-

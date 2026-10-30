@@ -250,15 +250,17 @@ export default function HomePage() {
       {/* ============================================================ */}
       {/* 🌟 HERO CANVAS CONTAINER (MATCHING THE USER REFERENCE DESIGN) */}
       {/* ============================================================ */}
-      <div className="relative mx-auto max-w-7xl rounded-[28px] sm:rounded-[40px] lg:rounded-[48px] bg-gradient-to-b from-[#4A3F35] via-[#352D26] to-[#25201B] border border-white/20 shadow-[0_25px_70px_rgba(0,0,0,0.5)] overflow-hidden">
+      <div className="relative mx-auto max-w-7xl p-2 sm:p-3 rounded-[32px] sm:rounded-[44px] lg:rounded-[52px] bg-gradient-to-b from-[#C4B5A5]/70 via-[#B09F8F]/50 to-[#998777]/60 border border-white/35 shadow-[0_25px_70px_rgba(0,0,0,0.5)]">
+        <div className="relative rounded-[26px] sm:rounded-[38px] lg:rounded-[44px] bg-gradient-to-b from-[#978676] via-[#9F8C7B] to-[#8C7B6D] overflow-hidden">
         
         {/* Ambient Warm Aurora Lighting in Hero */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-gradient-to-b from-amber-100/15 via-[#E6D5C3]/10 to-transparent blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[550px] h-[350px] bg-radial from-amber-100/25 via-[#FFF4E8]/10 to-transparent blur-2xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-[450px] h-[250px] bg-radial from-amber-50/15 via-transparent to-transparent blur-3xl pointer-events-none" />
         
         {/* 🌟 Glowing Curved Silk Ribbon (SVG Bezier Arc with Radial Glow) */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">
           <svg
-            className="w-full h-full object-cover min-w-[700px] sm:min-w-full opacity-90"
+            className="w-full h-full object-cover min-w-[700px] sm:min-w-full opacity-95"
             viewBox="0 0 1200 650"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -266,11 +268,11 @@ export default function HomePage() {
           >
             <defs>
               <linearGradient id="silkGlow" x1="0%" y1="60%" x2="100%" y2="30%">
-                <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.05" />
-                <stop offset="35%" stopColor="#FFF9F2" stopOpacity="0.85" />
+                <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.1" />
+                <stop offset="35%" stopColor="#FFF9F2" stopOpacity="0.9" />
                 <stop offset="60%" stopColor="#FFFFFF" stopOpacity="1" />
-                <stop offset="85%" stopColor="#F5E8D8" stopOpacity="0.7" />
-                <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.05" />
+                <stop offset="85%" stopColor="#FFF3E2" stopOpacity="0.85" />
+                <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.15" />
               </linearGradient>
 
               <filter id="silkBlur" x="-20%" y="-20%" width="140%" height="140%">
@@ -287,9 +289,9 @@ export default function HomePage() {
             {/* Glowing Diffused Ambient Under-Curve */}
             <path
               d="M -50 380 C 250 440, 480 470, 680 420 C 880 370, 1050 240, 1250 180"
-              stroke="#FFF2DF"
-              strokeWidth="28"
-              strokeOpacity="0.18"
+              stroke="#FFF5E8"
+              strokeWidth="32"
+              strokeOpacity="0.25"
               filter="url(#silkBlur)"
             />
 
@@ -297,7 +299,7 @@ export default function HomePage() {
             <path
               d="M -50 380 C 250 440, 480 470, 680 420 C 880 370, 1050 240, 1250 180"
               stroke="url(#silkGlow)"
-              strokeWidth="3.5"
+              strokeWidth="4"
               filter="url(#silkBlur)"
             />
           </svg>
@@ -409,7 +411,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             
             {/* Card 1: Rating / Precision */}
-            <div className="rounded-2xl sm:rounded-3xl bg-[#FAF6F0]/90 backdrop-blur-md p-6 sm:p-7 text-[#2D2721] shadow-lg shadow-black/10 transition-transform duration-200 hover:-translate-y-0.5">
+            <div className="rounded-3xl bg-[#F6EDE6] p-6 sm:p-7 text-[#2D2721] shadow-lg shadow-black/10 transition-transform duration-200 hover:-translate-y-0.5">
               <div className="flex items-center gap-1 text-amber-500 mb-3">
                 <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
                 <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
@@ -427,7 +429,7 @@ export default function HomePage() {
             </div>
 
             {/* Card 2: Emblem / Feature Headline */}
-            <div className="rounded-2xl sm:rounded-3xl bg-[#FAF6F0]/90 backdrop-blur-md p-6 sm:p-7 text-[#2D2721] shadow-lg shadow-black/10 transition-transform duration-200 hover:-translate-y-0.5">
+            <div className="rounded-3xl bg-[#F6EDE6] p-6 sm:p-7 text-[#2D2721] shadow-lg shadow-black/10 transition-transform duration-200 hover:-translate-y-0.5">
               <div className="flex items-center gap-2.5 mb-3">
                 <div className="w-7 h-7 rounded-lg bg-[#EAE2D7] text-[#2D2721] flex items-center justify-center">
                   <Settings className="w-4 h-4 text-[#2D2721]" />
@@ -442,7 +444,7 @@ export default function HomePage() {
             </div>
 
             {/* Card 3: Big 87% Display Numeral */}
-            <div className="rounded-2xl sm:rounded-3xl bg-[#FAF6F0]/90 backdrop-blur-md p-6 sm:p-7 text-[#2D2721] shadow-lg shadow-black/10 transition-transform duration-200 hover:-translate-y-0.5">
+            <div className="rounded-3xl bg-[#F6EDE6] p-6 sm:p-7 text-[#2D2721] shadow-lg shadow-black/10 transition-transform duration-200 hover:-translate-y-0.5">
               <div className="text-3xl sm:text-4xl font-extrabold text-[#2D2721] font-mono tracking-tight">
                 87%
               </div>
@@ -468,6 +470,7 @@ export default function HomePage() {
           </div>
         </div>
 
+        </div>
       </div>
 
       {/* ============================================================ */}

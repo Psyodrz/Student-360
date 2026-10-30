@@ -15,7 +15,8 @@ import {
   Edit,
   Trash2,
   X,
-  FileCheck2
+  FileCheck2,
+  Sparkles
 } from 'lucide-react';
 
 export default function InterventionsPage() {
@@ -101,9 +102,13 @@ export default function InterventionsPage() {
     e.preventDefault();
     if (!currentIv) return;
     try {
-      await interventionsAPI.update(currentIv.id, updateForm);
+      await interventionsAPI.update(currentIv.id, {
+        status: updateForm.status,
+        notes: updateForm.notes || null,
+        follow_up: updateForm.follow_up || null,
+        improvement_notes: updateForm.improvement_notes || null,
+      });
       setIsUpdateOpen(false);
-      setCurrentIv(null);
       fetchInterventions();
     } catch (err: any) {
       alert(err.response?.data?.detail || 'Failed to update intervention');
@@ -127,13 +132,18 @@ export default function InterventionsPage() {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-slate-200">
+      
+      {/* 🌟 Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-[#EADFD4]">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+          <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full border border-[#D8CEBE] bg-[#F4EAE1] text-[10px] uppercase tracking-widest text-[#5C4F43] font-bold mb-1.5">
+            <Sparkles className="w-3 h-3 text-amber-600" />
+            <span>REMEDIAL GOVERNANCE</span>
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-[#2C2621]">
             Academic Intervention Tracker
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-[#7A6D61] mt-0.5">
             Systematic remediation workflows, mentor assignments, and post-intervention evaluations
           </p>
         </div>
@@ -156,36 +166,36 @@ export default function InterventionsPage() {
         </button>
       </div>
 
-      {/* Metric Cards */}
+      {/* 🌟 Metric Cards (Warm Porcelain Style) */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-        <div className="card-surface p-4 border-l-4 border-oxford-800">
-          <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Total Recorded</span>
-          <div className="mt-1 text-2xl font-bold text-slate-900">{interventions.length}</div>
+        <div className="rounded-2xl sm:rounded-3xl bg-[#F6EDE6] border border-[#EADFD4] p-5 shadow-xs transition-transform duration-200 hover:-translate-y-0.5">
+          <span className="text-[10px] font-bold text-[#7A6D61] uppercase tracking-wider">Total Recorded</span>
+          <div className="mt-1 text-2xl sm:text-3xl font-extrabold text-[#2C2621] font-mono">{interventions.length}</div>
         </div>
-        <div className="card-surface p-4 border-l-4 border-slate-500">
-          <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Pending Action</span>
-          <div className="mt-1 text-2xl font-bold text-slate-700">{pendingCount}</div>
+        <div className="rounded-2xl sm:rounded-3xl bg-[#F6EDE6] border border-[#EADFD4] p-5 shadow-xs transition-transform duration-200 hover:-translate-y-0.5">
+          <span className="text-[10px] font-bold text-[#7A6D61] uppercase tracking-wider">Pending Action</span>
+          <div className="mt-1 text-2xl sm:text-3xl font-extrabold text-[#7A6D61] font-mono">{pendingCount}</div>
         </div>
-        <div className="card-surface p-4 border-l-4 border-academic-600">
-          <span className="text-[10px] font-semibold text-academic-700 uppercase tracking-wider">In Progress</span>
-          <div className="mt-1 text-2xl font-bold text-academic-800">{inProgressCount}</div>
+        <div className="rounded-2xl sm:rounded-3xl bg-[#F6EDE6] border border-[#EADFD4] p-5 shadow-xs transition-transform duration-200 hover:-translate-y-0.5">
+          <span className="text-[10px] font-bold text-[#B45309] uppercase tracking-wider">In Progress</span>
+          <div className="mt-1 text-2xl sm:text-3xl font-extrabold text-[#B45309] font-mono">{inProgressCount}</div>
         </div>
-        <div className="card-surface p-4 border-l-4 border-stable-600">
-          <span className="text-[10px] font-semibold text-stable-700 uppercase tracking-wider">Resolved & Evaluated</span>
-          <div className="mt-1 text-2xl font-bold text-stable-700">{completedCount}</div>
+        <div className="rounded-2xl sm:rounded-3xl bg-[#F6EDE6] border border-[#EADFD4] p-5 shadow-xs transition-transform duration-200 hover:-translate-y-0.5">
+          <span className="text-[10px] font-bold text-[#15803D] uppercase tracking-wider">Resolved & Evaluated</span>
+          <div className="mt-1 text-2xl sm:text-3xl font-extrabold text-[#15803D] font-mono">{completedCount}</div>
         </div>
       </div>
 
-      {/* Filter Bar */}
-      <div className="card-surface p-4 flex flex-wrap items-center gap-3">
-        <div className="flex items-center gap-2 text-xs font-semibold text-slate-600">
-          <Filter className="w-3.5 h-3.5" />
+      {/* 🌟 Filter Bar (Porcelain Card) */}
+      <div className="rounded-2xl sm:rounded-3xl bg-[#F6EDE6] border border-[#EADFD4] p-4 flex flex-wrap items-center gap-3 shadow-xs">
+        <div className="flex items-center gap-2 text-xs font-bold text-[#5C4F43]">
+          <Filter className="w-3.5 h-3.5 text-[#8C7D70]" />
           <span>Filter Cases:</span>
         </div>
         <select
           value={selectedStatus}
           onChange={(e) => setSelectedStatus(e.target.value)}
-          className="text-xs border border-slate-300 rounded-md py-1.5 px-3 bg-white"
+          className="text-xs border border-[#DACFBF] rounded-xl py-2 px-3 bg-white text-[#2C2621] font-medium focus:ring-2 focus:ring-[#8E7B68]"
         >
           <option value="">All Statuses</option>
           <option value="pending">Pending</option>
@@ -197,7 +207,7 @@ export default function InterventionsPage() {
         <select
           value={selectedFaculty}
           onChange={(e) => setSelectedFaculty(e.target.value)}
-          className="text-xs border border-slate-300 rounded-md py-1.5 px-3 bg-white"
+          className="text-xs border border-[#DACFBF] rounded-xl py-2 px-3 bg-white text-[#2C2621] font-medium focus:ring-2 focus:ring-[#8E7B68]"
         >
           <option value="">All Faculty Mentors</option>
           {facultyList.map((f) => (
@@ -208,19 +218,19 @@ export default function InterventionsPage() {
         {(selectedStatus || selectedFaculty) && (
           <button
             onClick={() => { setSelectedStatus(''); setSelectedFaculty(''); }}
-            className="text-xs text-slate-500 hover:text-slate-800 font-medium px-2 py-1"
+            className="text-xs text-[#7A6D61] hover:text-[#2C2621] font-bold underline px-2 py-1"
           >
             Clear Filters
           </button>
         )}
       </div>
 
-      {/* Interventions Ledger Table */}
-      <div className="card-surface overflow-hidden">
+      {/* 🌟 Interventions Ledger Table (Warm Porcelain Style) */}
+      <div className="rounded-3xl bg-[#F6EDE6] border border-[#EADFD4] overflow-hidden shadow-xs">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
-              <tr className="border-b border-slate-200 text-slate-500 font-semibold uppercase bg-slate-50/80">
+              <tr className="border-b border-[#EADFD4] text-[#7A6D61] font-bold uppercase tracking-wider bg-white/40">
                 <th className="py-3 px-4">Student</th>
                 <th className="py-3 px-4">Intervention Type</th>
                 <th className="py-3 px-4">Faculty Mentor</th>
@@ -229,54 +239,54 @@ export default function InterventionsPage() {
                 <th className="py-3 px-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-[#EADFD4]/60">
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="py-12 text-center text-slate-400">
-                    <div className="inline-block w-6 h-6 border-2 border-slate-300 border-t-oxford-800 rounded-full animate-spin mb-2" />
+                  <td colSpan={6} className="py-12 text-center text-[#8C7D70]">
+                    <div className="inline-block w-6 h-6 border-2 border-[#8C7D70] border-t-[#2C2621] rounded-full animate-spin mb-2" />
                     <div>Loading interventions...</div>
                   </td>
                 </tr>
               ) : interventions.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="py-12 text-center text-slate-400">
+                  <td colSpan={6} className="py-12 text-center text-[#8C7D70]">
                     No intervention records found.
                   </td>
                 </tr>
               ) : (
                 interventions.map((iv) => (
-                  <tr key={iv.id} className="hover:bg-slate-50/80 transition-colors">
-                    <td className="py-3 px-4 font-semibold text-slate-900 cursor-pointer hover:text-academic-700" onClick={() => navigate(`/students/${iv.student_id}`)}>
+                  <tr key={iv.id} className="hover:bg-white/60 transition-colors">
+                    <td className="py-3.5 px-4 font-bold text-[#2C2621] cursor-pointer hover:text-amber-800" onClick={() => navigate(`/students/${iv.student_id}`)}>
                       {iv.student_name || `Student #${iv.student_id}`}
                     </td>
-                    <td className="py-3 px-4 capitalize text-slate-700">
-                      <div>{iv.type.replace('_', ' ')}</div>
-                      <div className="text-[11px] text-slate-400 truncate max-w-xs">{iv.description}</div>
+                    <td className="py-3.5 px-4 capitalize text-[#2C2621]">
+                      <div className="font-semibold">{iv.type.replace('_', ' ')}</div>
+                      <div className="text-[11px] text-[#7A6D61] truncate max-w-xs">{iv.description}</div>
                     </td>
-                    <td className="py-3 px-4 text-slate-700">
+                    <td className="py-3.5 px-4 text-[#5C4F43]">
                       {iv.faculty_name || `Mentor #${iv.faculty_id}`}
                     </td>
-                    <td className="py-3 px-4 text-slate-500 font-mono">
+                    <td className="py-3.5 px-4 text-[#7A6D61] font-mono">
                       {iv.deadline || 'No target'}
                     </td>
-                    <td className="py-3 px-4 text-center">
-                      <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${
+                    <td className="py-3.5 px-4 text-center">
+                      <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase font-mono ${
                         iv.status === 'evaluated'
-                          ? 'bg-stable-100 text-stable-800'
+                          ? 'bg-[#DCFCE7] text-[#15803D]'
                           : iv.status === 'completed'
-                          ? 'bg-emerald-100 text-emerald-800'
+                          ? 'bg-[#DCFCE7] text-[#15803D]'
                           : iv.status === 'in_progress'
-                          ? 'bg-academic-100 text-academic-800'
-                          : 'bg-slate-100 text-slate-700'
+                          ? 'bg-[#FEF3C7] text-[#B45309]'
+                          : 'bg-white text-[#7A6D61] border border-[#DACFBF]'
                       }`}>
                         {iv.status.replace('_', ' ')}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-right">
+                    <td className="py-3.5 px-4 text-right">
                       <div className="flex items-center justify-end gap-1.5">
                         <button
                           onClick={() => openUpdateModal(iv)}
-                          className="px-2.5 py-1 text-xs font-semibold rounded bg-slate-100 hover:bg-slate-200 text-slate-800"
+                          className="px-3 py-1 text-xs font-bold rounded-xl bg-white hover:bg-[#F2ECE3] border border-[#DACFBF] text-[#2C2621] transition-all shadow-2xs"
                         >
                           Update Status
                         </button>
@@ -290,24 +300,24 @@ export default function InterventionsPage() {
         </div>
       </div>
 
-      {/* Create Intervention Modal */}
+      {/* 🌟 Create Intervention Modal */}
       {isCreateOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs">
-          <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 border border-slate-200">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
-              <h2 className="text-base font-bold text-slate-900">Initiate Academic Intervention</h2>
-              <button onClick={() => setIsCreateOpen(false)} className="text-slate-400 hover:text-slate-700">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
+          <div className="bg-[#F6EDE6] rounded-3xl shadow-2xl max-w-lg w-full p-6 sm:p-8 border border-white/60 animate-scale-in text-[#2C2621]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#EADFD4]">
+              <h2 className="text-base font-bold text-[#2C2621]">Initiate Academic Intervention</h2>
+              <button onClick={() => setIsCreateOpen(false)} className="text-[#8C7D70] hover:text-[#2C2621]">
                 <X className="w-5 h-5" />
               </button>
             </div>
             <form onSubmit={handleCreate} className="space-y-4 mt-4 text-xs">
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Target Student *</label>
+                <label className="block font-bold text-[#5C4F43] uppercase tracking-wider mb-1">Target Student *</label>
                 <select
                   required
                   value={createForm.student_id}
                   onChange={(e) => setCreateForm({ ...createForm, student_id: e.target.value })}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md bg-white focus:ring-1 focus:ring-oxford-800"
+                  className="w-full px-3.5 py-2.5 bg-white border border-[#DACFBF] rounded-xl text-[#2C2621] focus:ring-2 focus:ring-[#8E7B68]"
                 >
                   <option value="">Select Student</option>
                   {studentsList.map((s) => (
@@ -317,12 +327,12 @@ export default function InterventionsPage() {
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Assign Faculty Mentor *</label>
+                <label className="block font-bold text-[#5C4F43] uppercase tracking-wider mb-1">Assign Faculty Mentor *</label>
                 <select
                   required
                   value={createForm.faculty_id}
                   onChange={(e) => setCreateForm({ ...createForm, faculty_id: e.target.value })}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md bg-white focus:ring-1 focus:ring-oxford-800"
+                  className="w-full px-3.5 py-2.5 bg-white border border-[#DACFBF] rounded-xl text-[#2C2621] focus:ring-2 focus:ring-[#8E7B68]"
                 >
                   <option value="">Select Mentor</option>
                   {facultyList.map((f) => (
@@ -332,11 +342,11 @@ export default function InterventionsPage() {
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Intervention Type *</label>
+                <label className="block font-bold text-[#5C4F43] uppercase tracking-wider mb-1">Intervention Type *</label>
                 <select
                   value={createForm.type}
                   onChange={(e) => setCreateForm({ ...createForm, type: e.target.value })}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md bg-white focus:ring-1 focus:ring-oxford-800"
+                  className="w-full px-3.5 py-2.5 bg-white border border-[#DACFBF] rounded-xl text-[#2C2621] focus:ring-2 focus:ring-[#8E7B68]"
                 >
                   <option value="academic_support">Academic Remedial Tutoring</option>
                   <option value="counseling">Individual Mentorship Session</option>
@@ -347,28 +357,28 @@ export default function InterventionsPage() {
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Remediation Action Plan *</label>
+                <label className="block font-bold text-[#5C4F43] uppercase tracking-wider mb-1">Remediation Action Plan *</label>
                 <textarea
                   required
                   rows={3}
                   value={createForm.description}
                   onChange={(e) => setCreateForm({ ...createForm, description: e.target.value })}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-1 focus:ring-oxford-800"
+                  className="w-full px-3.5 py-2.5 bg-white border border-[#DACFBF] rounded-xl text-[#2C2621] focus:ring-2 focus:ring-[#8E7B68]"
                   placeholder="Specific tasks, target chapters, and weekly milestones..."
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Target Evaluation Date</label>
+                <label className="block font-bold text-[#5C4F43] uppercase tracking-wider mb-1">Target Evaluation Date</label>
                 <input
                   type="date"
                   value={createForm.deadline}
                   onChange={(e) => setCreateForm({ ...createForm, deadline: e.target.value })}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-1 focus:ring-oxford-800"
+                  className="w-full px-3.5 py-2.5 bg-white border border-[#DACFBF] rounded-xl text-[#2C2621] focus:ring-2 focus:ring-[#8E7B68]"
                 />
               </div>
 
-              <div className="flex justify-end gap-2 pt-4 border-t border-slate-200">
+              <div className="flex justify-end gap-2 pt-4 border-t border-[#EADFD4]">
                 <button type="button" onClick={() => setIsCreateOpen(false)} className="btn-secondary">
                   Cancel
                 </button>
@@ -381,23 +391,23 @@ export default function InterventionsPage() {
         </div>
       )}
 
-      {/* Update Intervention Modal */}
+      {/* 🌟 Update Intervention Modal */}
       {isUpdateOpen && currentIv && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs">
-          <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 border border-slate-200">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
-              <h2 className="text-base font-bold text-slate-900">Update Remedial Progression</h2>
-              <button onClick={() => setIsUpdateOpen(false)} className="text-slate-400 hover:text-slate-700">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
+          <div className="bg-[#F6EDE6] rounded-3xl shadow-2xl max-w-lg w-full p-6 sm:p-8 border border-white/60 animate-scale-in text-[#2C2621]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#EADFD4]">
+              <h2 className="text-base font-bold text-[#2C2621]">Update Remedial Progression</h2>
+              <button onClick={() => setIsUpdateOpen(false)} className="text-[#8C7D70] hover:text-[#2C2621]">
                 <X className="w-5 h-5" />
               </button>
             </div>
             <form onSubmit={handleUpdate} className="space-y-4 mt-4 text-xs">
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Progression Status *</label>
+                <label className="block font-bold text-[#5C4F43] uppercase tracking-wider mb-1">Progression Status *</label>
                 <select
                   value={updateForm.status}
                   onChange={(e) => setUpdateForm({ ...updateForm, status: e.target.value })}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md bg-white focus:ring-1 focus:ring-oxford-800"
+                  className="w-full px-3.5 py-2.5 bg-white border border-[#DACFBF] rounded-xl text-[#2C2621] focus:ring-2 focus:ring-[#8E7B68]"
                 >
                   <option value="pending">Pending</option>
                   <option value="in_progress">In Progress</option>
@@ -407,51 +417,51 @@ export default function InterventionsPage() {
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Mentor Session Notes</label>
+                <label className="block font-bold text-[#5C4F43] uppercase tracking-wider mb-1">Mentor Session Notes</label>
                 <textarea
                   rows={2}
                   value={updateForm.notes}
                   onChange={(e) => setUpdateForm({ ...updateForm, notes: e.target.value })}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-1 focus:ring-oxford-800"
+                  className="w-full px-3.5 py-2.5 bg-white border border-[#DACFBF] rounded-xl text-[#2C2621] focus:ring-2 focus:ring-[#8E7B68]"
                   placeholder="Meeting logs, attendance at remedial classes..."
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Follow-up Directives</label>
+                <label className="block font-bold text-[#5C4F43] uppercase tracking-wider mb-1">Follow-up Directives</label>
                 <textarea
                   rows={2}
                   value={updateForm.follow_up}
                   onChange={(e) => setUpdateForm({ ...updateForm, follow_up: e.target.value })}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-1 focus:ring-oxford-800"
+                  className="w-full px-3.5 py-2.5 bg-white border border-[#DACFBF] rounded-xl text-[#2C2621] focus:ring-2 focus:ring-[#8E7B68]"
                   placeholder="Future checkpoints or homework deadlines..."
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Tangible Improvement Outcome</label>
+                <label className="block font-bold text-[#5C4F43] uppercase tracking-wider mb-1">Tangible Improvement Outcome</label>
                 <textarea
                   rows={2}
                   value={updateForm.improvement_notes}
                   onChange={(e) => setUpdateForm({ ...updateForm, improvement_notes: e.target.value })}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-1 focus:ring-oxford-800"
+                  className="w-full px-3.5 py-2.5 bg-white border border-[#DACFBF] rounded-xl text-[#2C2621] focus:ring-2 focus:ring-[#8E7B68]"
                   placeholder="Grade increase percentage, attendance recovery delta..."
                 />
               </div>
 
-              <div className="flex justify-end gap-2 pt-4 border-t border-slate-200">
+              <div className="flex justify-end gap-2 pt-4 border-t border-[#EADFD4]">
                 <button type="button" onClick={() => setIsUpdateOpen(false)} className="btn-secondary">
                   Cancel
                 </button>
                 <button type="submit" className="btn-primary">
-                  Save Changes
+                  Save Progression
                 </button>
               </div>
             </form>
           </div>
         </div>
       )}
+
     </div>
   );
 }
-

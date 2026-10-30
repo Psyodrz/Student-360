@@ -10,7 +10,8 @@ import {
   PieChart as PieIcon,
   Award,
   Layers,
-  FileText
+  FileText,
+  Sparkles
 } from 'lucide-react';
 import {
   BarChart,
@@ -66,8 +67,8 @@ export default function AnalyticsPage() {
     return (
       <div className="flex items-center justify-center min-h-[500px]">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-3 border-oxford-900 border-t-academic-600 rounded-full animate-spin" />
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+          <div className="w-8 h-8 border-3 border-[#2C2621] border-t-amber-500 rounded-full animate-spin" />
+          <span className="text-xs font-semibold text-[#8C7D70] uppercase tracking-wider">
             Compiling Academic Analytics...
           </span>
         </div>
@@ -75,21 +76,20 @@ export default function AnalyticsPage() {
     );
   }
 
-  const riskPieData = [
-    { name: 'High Risk', value: riskDist?.High || 0, color: '#dc2626' },
-    { name: 'Medium Risk', value: riskDist?.Medium || 0, color: '#d97706' },
-    { name: 'Low Risk', value: riskDist?.Low || 0, color: '#16a34a' },
-  ];
-
   return (
     <div className="space-y-6 max-w-7xl mx-auto print:space-y-4">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-slate-200 print:hidden">
+      
+      {/* 🌟 Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-[#EADFD4] print:hidden">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+          <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full border border-[#D8CEBE] bg-[#F4EAE1] text-[10px] uppercase tracking-widest text-[#5C4F43] font-bold mb-1.5">
+            <Sparkles className="w-3 h-3 text-amber-600" />
+            <span>EXECUTIVE AUDIT</span>
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-[#2C2621]">
             Institutional Analytics & Reports
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-[#7A6D61] mt-0.5">
             Aggregated cross-departmental telemetry, intervention efficacy metrics, and audit exports
           </p>
         </div>
@@ -118,90 +118,91 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
-      {/* High-level Efficacy Summary Cards */}
+      {/* 🌟 Efficacy Summary Cards (Warm Porcelain Style) */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="card-surface p-5 border-l-4 border-oxford-900">
-          <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+        <div className="rounded-2xl sm:rounded-3xl bg-[#F6EDE6] border border-[#EADFD4] p-5 shadow-xs transition-transform duration-200 hover:-translate-y-0.5">
+          <span className="text-[10px] font-bold text-[#7A6D61] uppercase tracking-wider">
             Total Remedial Cases Handled
           </span>
-          <div className="mt-2 text-3xl font-black font-mono text-slate-900">
+          <div className="mt-2 text-2xl sm:text-3xl font-extrabold font-mono text-[#2C2621]">
             {effectiveness?.total || 0}
           </div>
-          <p className="mt-1 text-[11px] text-slate-400">Total institutional cases initiated to date</p>
+          <p className="mt-1 text-[11px] text-[#7A6D61]">Total institutional cases initiated to date</p>
         </div>
 
-        <div className="card-surface p-5 border-l-4 border-stable-600">
-          <span className="text-[11px] font-bold text-stable-700 uppercase tracking-wider">
-            Intervention Completion & Success Rate
+        <div className="rounded-2xl sm:rounded-3xl bg-[#F6EDE6] border border-[#EADFD4] p-5 shadow-xs transition-transform duration-200 hover:-translate-y-0.5">
+          <span className="text-[10px] font-bold text-[#15803D] uppercase tracking-wider">
+            Intervention Recovery Success Rate
           </span>
-          <div className="mt-2 text-3xl font-black font-mono text-stable-700">
+          <div className="mt-2 text-2xl sm:text-3xl font-extrabold font-mono text-[#15803D]">
             {effectiveness?.completion_rate || 0}%
           </div>
-          <p className="mt-1 text-[11px] text-slate-400">{effectiveness?.completed || 0} cases evaluated with confirmed turnaround</p>
+          <p className="mt-1 text-[11px] text-[#7A6D61]">{effectiveness?.completed || 0} cases evaluated with confirmed turnaround</p>
         </div>
 
-        <div className="card-surface p-5 border-l-4 border-academic-600">
-          <span className="text-[11px] font-bold text-academic-800 uppercase tracking-wider">
-            Participating Departments
+        <div className="rounded-2xl sm:rounded-3xl bg-[#F6EDE6] border border-[#EADFD4] p-5 shadow-xs transition-transform duration-200 hover:-translate-y-0.5">
+          <span className="text-[10px] font-bold text-[#B45309] uppercase tracking-wider">
+            Participating Academic Divisions
           </span>
-          <div className="mt-2 text-3xl font-black font-mono text-academic-900">
+          <div className="mt-2 text-2xl sm:text-3xl font-extrabold font-mono text-[#2C2621]">
             {deptComparison.length}
           </div>
-          <p className="mt-1 text-[11px] text-slate-400">Computer Science, EC, Mechanical, Civil, Mathematics</p>
+          <p className="mt-1 text-[11px] text-[#7A6D61]">Computer Science, EC, Mechanical, Civil, Mathematics</p>
         </div>
       </div>
 
-      {/* Department Comparison Chart */}
-      <div className="card-surface p-6">
-        <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+      {/* 🌟 Department Comparison Chart (Porcelain Card) */}
+      <div className="rounded-3xl bg-[#F6EDE6] border border-[#EADFD4] p-6 shadow-xs">
+        <div className="flex items-center justify-between pb-3 border-b border-[#EADFD4]">
           <div>
-            <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
+            <h2 className="text-sm font-bold text-[#2C2621] uppercase tracking-wider">
               Departmental Risk & Attendance Comparison
             </h2>
-            <p className="text-[11px] text-slate-400">Average Risk Score vs Average Attendance Rate across disciplines</p>
+            <p className="text-[11px] text-[#7A6D61]">Average Risk Score vs Average Attendance Rate across disciplines</p>
           </div>
         </div>
         <div className="h-72 mt-4">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={deptComparison}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-              <XAxis dataKey="code" tick={{ fontSize: 11, fill: '#64748b' }} axisLine={false} tickLine={false} />
-              <YAxis domain={[0, 100]} tick={{ fontSize: 11, fill: '#64748b' }} axisLine={false} tickLine={false} unit="%" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E3DACD" />
+              <XAxis dataKey="code" tick={{ fontSize: 11, fill: '#7A6D61' }} axisLine={false} tickLine={false} />
+              <YAxis domain={[0, 100]} tick={{ fontSize: 11, fill: '#7A6D61' }} axisLine={false} tickLine={false} unit="%" />
               <Tooltip
-                contentStyle={{ backgroundColor: '#0f172a', color: '#fff', borderRadius: '6px', fontSize: '12px' }}
+                contentStyle={{ backgroundColor: '#1F1B18', color: '#FAF7F2', borderRadius: '12px', fontSize: '11px', border: '1px solid rgba(255,255,255,0.15)' }}
               />
-              <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
-              <Bar dataKey="avg_risk" name="Avg Risk Index (/100)" fill="#dc2626" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="avg_attendance" name="Avg Attendance %" fill="#1e293b" radius={[4, 4, 0, 0]} />
+              <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px', color: '#5C4F43' }} />
+              <Bar dataKey="avg_risk" name="Avg Risk Index (/100)" fill="#DC2626" radius={[6, 6, 0, 0]} />
+              <Bar dataKey="avg_attendance" name="Avg Attendance %" fill="#2C2621" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
       </div>
 
-      {/* Two Column Layout: Intervention Status & Department Table */}
+      {/* 🌟 Two Column Layout: Intervention Status & Department Table */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
         {/* Department Data Ledger */}
-        <div className="card-surface p-5">
-          <h3 className="text-sm font-semibold text-slate-800 pb-3 border-b border-slate-100">
+        <div className="rounded-3xl bg-[#F6EDE6] border border-[#EADFD4] p-6 shadow-xs">
+          <h3 className="text-sm font-bold text-[#2C2621] pb-3 border-b border-[#EADFD4]">
             Departmental Ledger Breakdown
           </h3>
           <div className="mt-3 overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-slate-200 text-slate-500 font-semibold uppercase bg-slate-50">
-                  <th className="py-2.5 px-3">Department</th>
+                <tr className="border-b border-[#EADFD4] text-[#7A6D61] font-bold uppercase bg-white/40">
+                  <th className="py-2.5 px-3 rounded-l-xl">Department</th>
                   <th className="py-2.5 px-3 text-center">Students</th>
                   <th className="py-2.5 px-3 text-center">Avg Risk</th>
-                  <th className="py-2.5 px-3 text-center">Avg Attendance</th>
+                  <th className="py-2.5 px-3 text-center rounded-r-xl">Avg Attendance</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-[#EADFD4]/60">
                 {deptComparison.map((d: any) => (
-                  <tr key={d.code} className="hover:bg-slate-50">
-                    <td className="py-2.5 px-3 font-semibold text-slate-800">{d.department} ({d.code})</td>
-                    <td className="py-2.5 px-3 text-center font-mono">{d.total_students}</td>
-                    <td className="py-2.5 px-3 text-center font-bold font-mono text-slate-900">{d.avg_risk}</td>
-                    <td className="py-2.5 px-3 text-center font-bold font-mono text-stable-700">{d.avg_attendance}%</td>
+                  <tr key={d.code} className="hover:bg-white/60 transition-colors">
+                    <td className="py-2.5 px-3 font-semibold text-[#2C2621]">{d.department} ({d.code})</td>
+                    <td className="py-2.5 px-3 text-center font-mono text-[#2C2621]">{d.total_students}</td>
+                    <td className="py-2.5 px-3 text-center font-bold font-mono text-[#DC2626]">{d.avg_risk}</td>
+                    <td className="py-2.5 px-3 text-center font-bold font-mono text-[#15803D]">{d.avg_attendance}%</td>
                   </tr>
                 ))}
               </tbody>
@@ -210,28 +211,28 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Intervention Status Breakdown */}
-        <div className="card-surface p-5">
-          <h3 className="text-sm font-semibold text-slate-800 pb-3 border-b border-slate-100">
+        <div className="rounded-3xl bg-[#F6EDE6] border border-[#EADFD4] p-6 shadow-xs">
+          <h3 className="text-sm font-bold text-[#2C2621] pb-3 border-b border-[#EADFD4]">
             Intervention Case Status Distribution
           </h3>
-          <div className="mt-4 space-y-3">
+          <div className="mt-4 space-y-3.5">
             {effectiveness?.by_status?.map((st: any) => {
               const total = effectiveness.total || 1;
               const pct = Math.round((st.count / total) * 100);
               return (
-                <div key={st.status} className="space-y-1 text-xs">
-                  <div className="flex justify-between font-medium">
-                    <span className="capitalize text-slate-700">{st.status.replace('_', ' ')}</span>
-                    <span className="text-slate-500 font-mono">{st.count} cases ({pct}%)</span>
+                <div key={st.status} className="space-y-1.5 text-xs">
+                  <div className="flex justify-between font-semibold">
+                    <span className="capitalize text-[#2C2621]">{st.status.replace('_', ' ')}</span>
+                    <span className="text-[#7A6D61] font-mono">{st.count} cases ({pct}%)</span>
                   </div>
-                  <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                  <div className="w-full bg-white/80 border border-[#DACFBF] rounded-full h-2.5 overflow-hidden p-0.5">
                     <div
-                      className={`h-full rounded-full ${
+                      className={`h-full rounded-full transition-all duration-300 ${
                         st.status === 'completed' || st.status === 'evaluated'
-                          ? 'bg-stable-600'
+                          ? 'bg-[#16A34A]'
                           : st.status === 'in_progress'
-                          ? 'bg-academic-600'
-                          : 'bg-slate-400'
+                          ? 'bg-[#D97706]'
+                          : 'bg-[#8C7D70]'
                       }`}
                       style={{ width: `${pct}%` }}
                     />
@@ -241,8 +242,9 @@ export default function AnalyticsPage() {
             })}
           </div>
         </div>
+
       </div>
+
     </div>
   );
 }
-
