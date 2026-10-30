@@ -3,6 +3,16 @@ Student360 — Academic Early-Warning & Intervention Intelligence Platform
 Hugging Face Space Interactive Demo
 """
 
+try:
+    import spaces
+except ImportError:
+    class spaces:
+        @staticmethod
+        def GPU(fn=None, **kwargs):
+            if fn is None:
+                return lambda f: f
+            return fn
+
 import gradio as gr
 import plotly.graph_objects as go
 import plotly.express as px
@@ -108,6 +118,7 @@ SAMPLE_STUDENTS = [
 # ==========================================
 # CORE ALGORITHMIC ENGINE
 # ==========================================
+@spaces.GPU
 def calculate_risk(
     attendance_pct: float,
     assignment_pct: float,

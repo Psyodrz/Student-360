@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   GraduationCap,
@@ -30,12 +30,18 @@ import {
   Star,
   Settings,
   Menu,
-  X
+  X,
+  History,
+  FileCheck
 } from 'lucide-react';
 
 export default function HomePage() {
   // Mobile Drawer Toggle
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Scrollytelling Active Step State
+  const [scrollyStep, setScrollyStep] = useState<number>(0);
+  const scrollyContainerRef = useRef<HTMLDivElement>(null);
 
   // Interactive Hero Telemetry Sandbox State
   const [attVal, setAttVal] = useState<number>(68);
@@ -84,6 +90,117 @@ export default function HomePage() {
       contribC: Math.round(0.40 * C * 10) / 10,
     };
   }, [attVal, asgVal, examVal]);
+
+  // Scrollytelling Narrative Data Chapters
+  const scrollyChapters = [
+    {
+      step: "01",
+      week: "Week 03",
+      title: "Initial Attendance Deviation Detected",
+      description: "Alex's lecture attendance quietly slips from 90% down to 58%, dipping below the statutory 75% institutional quota. Traditional university systems remain silent until finals, but Student360 immediately initiates a telemetry alert.",
+      att: 58,
+      asg: 85,
+      exam: 74,
+      risk: 25.4,
+      level: "LOW WARNING",
+      levelColor: "#B78103",
+      levelBg: "#FFF8E1",
+      badge: "QUOTA THRESHOLD BREACH",
+      insight: "Statutory 75% quota breached. Factor A penalty engaged (+7.9 pts to composite score).",
+      action: "System flags student in faculty advisor's weekly digest."
+    },
+    {
+      step: "02",
+      week: "Week 06",
+      title: "Coursework Incompletion Backlog",
+      description: "Compounding missed lectures lead to unsubmitted laboratory exercises. Continuous coursework completion falls to 45%. The multi-dimensional algorithm captures the deficit without waiting for midterms.",
+      att: 54,
+      asg: 45,
+      exam: 70,
+      risk: 41.2,
+      level: "MODERATE RISK",
+      levelColor: "#D97706",
+      levelBg: "#FEF3C7",
+      badge: "COMPOUNDING HOMEWORK DEFICIT",
+      insight: "Coursework submission completion dropped to 45%. Factor B contributes +13.8 risk points.",
+      action: "Automated peer-tutoring suggestion generated."
+    },
+    {
+      step: "03",
+      week: "Week 09",
+      title: "Algorithmic Sudden Drop Alert (>15%)",
+      description: "Alex scores 44% on the midterm exam after averaging 68% previously. The automated trend detection engine identifies a -24% sudden performance collapse, crossing the critical >15% volatility alert.",
+      att: 52,
+      asg: 45,
+      exam: 44,
+      risk: 74.2,
+      level: "CRITICAL RISK",
+      levelColor: "#DC2626",
+      levelBg: "#FEE2E2",
+      badge: "🚨 SUDDEN PERFORMANCE DROP (>15%)",
+      insight: "Sudden Performance Drop (-24%) triggers high-priority advisor escalation.",
+      action: "Formal remedial intervention case opened automatically."
+    },
+    {
+      step: "04",
+      week: "Week 10",
+      title: "What-If Recovery Simulator Engaged",
+      description: "Rather than issuing a punitive suspension, the faculty mentor meets with Alex and opens the Recovery Simulator. They model what happens if attendance recovers to 80% and the remedial midterm hits 68%.",
+      att: 80,
+      asg: 75,
+      exam: 68,
+      risk: 24.5,
+      level: "PROJECTED SAFE",
+      levelColor: "#059669",
+      levelBg: "#D1FAE5",
+      badge: "PROVABLE RECOVERY FEASIBILITY",
+      insight: "Simulator proves feasibility: an attainable +28% attendance jump eliminates 49.7 risk points.",
+      action: "Alex signs customized remedial attendance & tutoring contract."
+    },
+    {
+      step: "05",
+      week: "Week 14",
+      title: "Intervention Fulfilled & Dropout Prevented",
+      description: "Supported by peer mentors and accountable office hours, Alex achieves 82% attendance and scores 72% on the semester final. The case lifecycle advances to Evaluated & Successfully Retained.",
+      att: 82,
+      asg: 80,
+      exam: 72,
+      risk: 15.0,
+      level: "RETAINED & PASSING",
+      levelColor: "#16A34A",
+      levelBg: "#DCFCE7",
+      badge: "100% RETENTION SUCCESS",
+      insight: "Composite risk index lowered to 15.0 (Low Risk). Student fully back on track for graduation.",
+      action: "Intervention closed with verified credit clearance."
+    }
+  ];
+
+  // IntersectionObserver for Scrollytelling narrative step detection
+  useEffect(() => {
+    const stepElements = document.querySelectorAll('.scrolly-step-card');
+    if (!stepElements || stepElements.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const stepIndex = Number(entry.target.getAttribute('data-step-index'));
+            if (!isNaN(stepIndex)) {
+              setScrollyStep(stepIndex);
+            }
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: '-15% 0px -40% 0px',
+        threshold: 0.4
+      }
+    );
+
+    stepElements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 
   const studentCases = [
     {
@@ -202,8 +319,12 @@ export default function HomePage() {
 
           {/* Center Links (Clean & Airy) */}
           <nav className="hidden md:flex items-center gap-8 text-xs font-medium text-[#E0D7CD] tracking-wide">
-            <a href="#about" className="hover:text-white transition-colors">About</a>
-            <a href="#formula" className="hover:text-white transition-colors">Risk Engine</a>
+            <a href="#scrollytelling" className="hover:text-white transition-colors flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <span>Interactive Story</span>
+            </a>
+            <a href="#about" className="hover:text-white transition-colors">Risk Sandbox</a>
+            <a href="#formula" className="hover:text-white transition-colors">Equation Audit</a>
             <a href="#capabilities" className="hover:text-white transition-colors">Services</a>
             <a href="#roles" className="hover:text-white transition-colors">Governance</a>
           </nav>
@@ -232,7 +353,8 @@ export default function HomePage() {
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
           <div className="md:hidden relative z-40 px-6 py-4 mx-6 mt-4 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/15 space-y-3 animate-fade-in text-xs font-medium">
-            <a href="#about" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 text-slate-200 hover:text-white">About Platform</a>
+            <a href="#scrollytelling" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 text-amber-200 hover:text-white font-semibold">Interactive Scrollytelling Story</a>
+            <a href="#about" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 text-slate-200 hover:text-white">Risk Simulator Sandbox</a>
             <a href="#formula" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 text-slate-200 hover:text-white">Deterministic Risk Engine</a>
             <a href="#capabilities" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 text-slate-200 hover:text-white">Services & Capabilities</a>
             <a href="#roles" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 text-slate-200 hover:text-white">Institutional Governance</a>
@@ -262,14 +384,21 @@ export default function HomePage() {
             Eliminate student dropouts with explainable multi-signal telemetry. Powered by open mathematical risk modeling, automated trend detection, and simulated remedial trajectories.
           </p>
 
-          {/* Primary Pill Button */}
-          <div className="mt-8 flex justify-center">
+          {/* Primary Pill Buttons */}
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Link
               to="/login"
               className="inline-flex items-center justify-center px-8 py-3.5 rounded-2xl bg-[#FAF7F2] text-[#2C2621] font-semibold text-sm shadow-xl shadow-black/15 hover:bg-white hover:scale-[1.02] active:scale-[0.98] transition-all"
             >
               Get Started
             </Link>
+            <a
+              href="#scrollytelling"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-white/10 text-white font-medium text-sm border border-white/20 hover:bg-white/15 transition-all"
+            >
+              <span>Explore Interactive Story</span>
+              <ChevronRight className="w-4 h-4 text-amber-300" />
+            </a>
           </div>
         </div>
 
@@ -342,9 +471,231 @@ export default function HomePage() {
       </div>
 
       {/* ============================================================ */}
+      {/* 🎬 SCROLLYTELLING SECTION: THE ANATOMY OF AN EARLY RECOVERY */}
+      {/* ============================================================ */}
+      <section id="scrollytelling" ref={scrollyContainerRef} className="max-w-7xl mx-auto mt-20 sm:mt-28 px-4 sm:px-6">
+        
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-20">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-200 text-xs font-mono font-semibold uppercase tracking-widest mb-3">
+            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+            <span>Interactive Scrollytelling Case Study</span>
+          </div>
+          <h2 className="text-3xl sm:text-5xl font-bold text-white tracking-tight">
+            How Student360 Rescues At-Risk Students
+          </h2>
+          <p className="mt-4 text-sm sm:text-base text-[#D4C8BC] leading-relaxed">
+            Scroll down to watch a student's real-time academic telemetry evolve week-by-week. See how early signals, algorithmic sudden drop detection, and what-if simulation prevent an unpredicted dropout.
+          </p>
+        </div>
+
+        {/* Scrollytelling Layout: Sticky Console on Left + Narrative Cards on Right */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start relative">
+          
+          {/* ========================================== */}
+          {/* STICKY VISUAL STAGE (PINS DURING SCROLL)   */}
+          {/* ========================================== */}
+          <div className="lg:col-span-6 lg:sticky lg:top-24 z-20">
+            <div className="rounded-[32px] sm:rounded-[40px] bg-[#FAF6F0] p-6 sm:p-8 text-[#2D2721] shadow-2xl border border-white/60 transition-all duration-300">
+              
+              {/* Stage Header */}
+              <div className="flex items-center justify-between pb-4 border-b border-[#EAE2D7]">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#7A6E63]">
+                    Live Telemetry Stage • {scrollyChapters[scrollyStep].week}
+                  </span>
+                </div>
+                <span
+                  className="px-3 py-1 rounded-full text-[11px] font-bold font-mono tracking-wider transition-all duration-300"
+                  style={{
+                    backgroundColor: scrollyChapters[scrollyStep].levelBg,
+                    color: scrollyChapters[scrollyStep].levelColor,
+                  }}
+                >
+                  {scrollyChapters[scrollyStep].level}
+                </span>
+              </div>
+
+              {/* Student Dossier Quick Strip */}
+              <div className="my-4 p-3.5 rounded-2xl bg-[#EFE8DD] flex items-center justify-between text-xs font-mono">
+                <div>
+                  <span className="font-bold text-[#2D2721] block">Alex Johnson</span>
+                  <span className="text-[#7A6E63] text-[11px]">CS-2023-014 • Computer Science</span>
+                </div>
+                <div className="text-right">
+                  <span className="text-[10px] text-[#7A6E63] uppercase block">Telemetry Step</span>
+                  <span className="font-bold text-[#2D2721]">{scrollyChapters[scrollyStep].step} / 05</span>
+                </div>
+              </div>
+
+              {/* Dynamic Risk Gauge */}
+              <div className="py-4 text-center">
+                <div className="text-5xl sm:text-6xl font-extrabold text-[#2D2721] font-mono tracking-tight transition-all duration-300">
+                  {scrollyChapters[scrollyStep].risk.toFixed(1)}
+                  <span className="text-lg text-[#7A6E63] font-normal"> / 100</span>
+                </div>
+                <div className="inline-block mt-2 px-3 py-0.5 rounded-full text-xs font-bold font-mono text-white transition-all duration-300"
+                  style={{ backgroundColor: scrollyChapters[scrollyStep].levelColor }}
+                >
+                  {scrollyChapters[scrollyStep].badge}
+                </div>
+              </div>
+
+              {/* Real-time Metric Bars */}
+              <div className="space-y-3.5 my-4 pt-4 border-t border-[#EAE2D7]">
+                <div>
+                  <div className="flex justify-between text-xs font-mono mb-1">
+                    <span className="text-[#7A6E63]">Lecture Attendance (A)</span>
+                    <span className="font-bold text-[#2D2721]">{scrollyChapters[scrollyStep].att}%</span>
+                  </div>
+                  <div className="w-full bg-[#EAE2D7] h-2.5 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all duration-500 ${
+                        scrollyChapters[scrollyStep].att < 75 ? 'bg-rose-500' : 'bg-emerald-600'
+                      }`}
+                      style={{ width: `${scrollyChapters[scrollyStep].att}%` }}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex justify-between text-xs font-mono mb-1">
+                    <span className="text-[#7A6E63]">Assignment Completion (B)</span>
+                    <span className="font-bold text-[#2D2721]">{scrollyChapters[scrollyStep].asg}%</span>
+                  </div>
+                  <div className="w-full bg-[#EAE2D7] h-2.5 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-indigo-500 rounded-full transition-all duration-500"
+                      style={{ width: `${scrollyChapters[scrollyStep].asg}%` }}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex justify-between text-xs font-mono mb-1">
+                    <span className="text-[#7A6E63]">Midterm Exam Performance (C)</span>
+                    <span className="font-bold text-[#2D2721]">{scrollyChapters[scrollyStep].exam}%</span>
+                  </div>
+                  <div className="w-full bg-[#EAE2D7] h-2.5 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all duration-500 ${
+                        scrollyChapters[scrollyStep].exam < 60 ? 'bg-rose-500' : 'bg-emerald-600'
+                      }`}
+                      style={{ width: `${scrollyChapters[scrollyStep].exam}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Dynamic Telemetry Log Callout */}
+              <div className="mt-4 p-3.5 rounded-2xl bg-[#EFE8DD] text-xs font-mono text-[#574C42] border border-[#E0D5C7]">
+                <strong className="text-[#2D2721] block mb-1">System Action Taken:</strong>
+                {scrollyChapters[scrollyStep].action}
+              </div>
+
+              {/* Scrollytelling Step Quick Jumper */}
+              <div className="mt-5 pt-3 border-t border-[#EAE2D7] flex items-center justify-between text-xs font-mono text-[#7A6E63]">
+                <span>Jump to Chapter:</span>
+                <div className="flex items-center gap-1.5">
+                  {scrollyChapters.map((ch, idx) => (
+                    <button
+                      key={ch.step}
+                      type="button"
+                      onClick={() => {
+                        setScrollyStep(idx);
+                        const target = document.getElementById(`scrolly-chapter-${idx}`);
+                        target?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      }}
+                      className={`w-7 h-7 rounded-lg text-xs font-bold transition-all ${
+                        scrollyStep === idx
+                          ? 'bg-[#2D2721] text-white shadow-md'
+                          : 'bg-[#EFE8DD] text-[#7A6E63] hover:bg-[#E0D5C7]'
+                      }`}
+                    >
+                      {ch.step}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          {/* ========================================== */}
+          {/* SCROLLING NARRATIVE CHAPTERS (RIGHT SIDE)  */}
+          {/* ========================================== */}
+          <div className="lg:col-span-6 space-y-8 sm:space-y-16 py-4 lg:py-12">
+            {scrollyChapters.map((chapter, index) => {
+              const isActive = scrollyStep === index;
+              return (
+                <div
+                  key={chapter.step}
+                  id={`scrolly-chapter-${index}`}
+                  data-step-index={index}
+                  className={`scrolly-step-card rounded-[28px] sm:rounded-[36px] p-7 sm:p-9 text-left border transition-all duration-300 ${
+                    isActive
+                      ? 'bg-[#312A24] border-amber-300/40 shadow-2xl scale-[1.01]'
+                      : 'bg-[#241F1B]/80 border-white/10 opacity-70 hover:opacity-100'
+                  }`}
+                >
+                  {/* Step Ribbon & Timeline Badge */}
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-xs font-mono text-amber-200 font-bold border border-white/15">
+                      <Clock className="w-3.5 h-3.5 text-amber-300" />
+                      {chapter.week} • Chapter {chapter.step}
+                    </span>
+                    <span
+                      className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider"
+                      style={{
+                        backgroundColor: chapter.levelBg,
+                        color: chapter.levelColor,
+                      }}
+                    >
+                      {chapter.level}
+                    </span>
+                  </div>
+
+                  {/* Chapter Title */}
+                  <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+                    {chapter.title}
+                  </h3>
+
+                  {/* Narrative Body */}
+                  <p className="mt-3 text-xs sm:text-sm text-[#D5CDC2] leading-relaxed">
+                    {chapter.description}
+                  </p>
+
+                  {/* Analytical Insight Box */}
+                  <div className="mt-5 p-4 rounded-2xl bg-black/30 border border-white/5 space-y-1.5 font-mono text-xs">
+                    <div className="text-amber-200 font-bold flex items-center gap-1.5">
+                      <Activity className="w-3.5 h-3.5" />
+                      <span>Mathematical Signal:</span>
+                    </div>
+                    <p className="text-white/80 leading-relaxed text-[11px]">
+                      {chapter.insight}
+                    </p>
+                  </div>
+
+                  {/* Status Indicator */}
+                  <div className="mt-4 flex items-center justify-between text-[11px] font-mono text-white/50 pt-3 border-t border-white/10">
+                    <span>Active Telemetry: {chapter.risk} / 100</span>
+                    <span className={isActive ? 'text-amber-300 font-bold' : 'text-white/40'}>
+                      {isActive ? '● Stage Viewing' : '○ Scroll to View'}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ============================================================ */}
       {/* SECTION: LIVE TELEMETRY LAB & RECOVERY SANDBOX */}
       {/* ============================================================ */}
-      <section id="about" className="max-w-7xl mx-auto mt-16 sm:mt-24 px-4 sm:px-6">
+      <section id="about" className="max-w-7xl mx-auto mt-20 sm:mt-28 px-4 sm:px-6">
         <div className="rounded-[32px] sm:rounded-[40px] bg-[#2A241F] border border-white/10 p-6 sm:p-10 lg:p-12 shadow-2xl">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             
