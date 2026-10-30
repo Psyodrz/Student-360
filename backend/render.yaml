@@ -11,3 +11,4 @@ services:
         generateValue: true
       - key: DATABASE_URL
         value: sqlite:///./student360.db
+
