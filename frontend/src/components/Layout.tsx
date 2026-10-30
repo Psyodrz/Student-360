@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { cmsAPI } from '../lib/api';
+import NoticeBanner from './NoticeBanner';
 import {
   LayoutDashboard,
   Users,
@@ -26,18 +26,6 @@ export default function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [announcements, setAnnouncements] = useState<any[]>([]);
-  const [announcementDismissed, setAnnouncementDismissed] = useState(false);
-
-  useEffect(() => {
-    cmsAPI.getPublicAnnouncements()
-      .then(res => {
-        if (res.data && res.data.length > 0) {
-          setAnnouncements(res.data);
-        }
-      })
-      .catch(() => {});
-  }, []);
 
   const handleLogout = () => {
     logout();
@@ -102,24 +90,8 @@ export default function Layout() {
   return (
     <div className="min-h-screen flex flex-col bg-[#FBF9F5] text-[#2C2621] selection:bg-[#EADBCE] selection:text-[#2C2621]">
       
-      {/* 🌟 Institutional Cashmere Notification Banner */}
-      {announcements.length > 0 && !announcementDismissed && (
-        <div className="bg-gradient-to-r from-[#2C2621] via-[#38302A] to-[#2C2621] text-[#FAF7F2] px-4 py-2.5 text-xs font-medium border-b border-[#4A3F36] flex items-center justify-between shadow-xs">
-          <div className="flex items-center gap-2 max-w-5xl mx-auto flex-1">
-            <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-400 text-[#1F1B18]">
-              Notice
-            </span>
-            <span className="font-semibold text-amber-200">{announcements[0].title}:</span>
-            <span className="text-[#D8CEBE] truncate">{announcements[0].content}</span>
-          </div>
-          <button
-            onClick={() => setAnnouncementDismissed(true)}
-            className="text-[#A69788] hover:text-white ml-3 p-0.5 rounded"
-          >
-            <X className="w-3.5 h-3.5" />
-          </button>
-        </div>
-      )}
+      {/* 🌟 Dynamic Mobile & Desktop Institutional Campus Notice Ticker */}
+      <NoticeBanner />
 
       <div className="flex flex-1 overflow-hidden">
         

@@ -14,7 +14,7 @@ Provides CRUD on:
 """
 from datetime import datetime, date as dt_date
 from typing import Optional, List
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Header
 from sqlalchemy.orm import Session
 from sqlalchemy import func, desc
 from app.database import get_db
@@ -797,20 +797,34 @@ def reset_database(
 @router.get("/public/announcements")
 def get_active_announcements(
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    authorization: Optional[str] = Header(None),
 ):
-    """Visible to all authenticated users — returns active announcements for their role."""
-    now = datetime.utcnow()
+    """Public endpoint — returns active announcements for all campus users."""
+    user_role = None
+    if authorization and authorization.startswith("Bearer "):
+        token = authorization.split(" ")[1]
+        try:
+            from app.auth import SECRET_KEY, ALGORITHM
+            from jose import jwt
+            payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+            user_role = payload.get("role")
+        except Exception:
+            pass
+
     q = db.query(Announcement).filter(Announcement.is_active == True)
     anns = q.order_by(desc(Announcement.created_at)).limit(20).all()
     result = []
     for a in anns:
-        # Filter by target_roles if set
-        if a.target_roles and len(a.target_roles) > 0:
-            if current_user.role.value not in a.target_roles:
+        if user_role and a.target_roles and len(a.target_roles) > 0:
+            if user_role not in a.target_roles and "all" not in a.target_roles:
+                continue
+        elif not user_role and a.target_roles and len(a.target_roles) > 0:
+            if "student" not in a.target_roles and "all" not in a.target_roles:
                 continue
         result.append({
-            "id": a.id, "title": a.title, "content": a.content,
+            "id": a.id,
+            "title": a.title,
+            "content": a.content,
             "priority": a.priority,
             "created_at": str(a.created_at) if a.created_at else None,
         })

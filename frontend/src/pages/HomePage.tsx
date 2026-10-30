@@ -34,6 +34,7 @@ import {
   History,
   FileCheck
 } from 'lucide-react';
+import NoticeBanner from '../components/NoticeBanner';
 
 export default function HomePage() {
   // Mobile Drawer Toggle
@@ -246,6 +247,9 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-[#1F1B18] text-[#F5EFEB] font-sans selection:bg-[#EADBCE] selection:text-[#2C2621] overflow-x-hidden p-2 sm:p-5 lg:p-8">
+      
+      {/* 🌟 Dynamic Campus Notice Ticker (Accessible on Mobile & Desktop) */}
+      <NoticeBanner className="mb-3 sm:mb-4 rounded-xl sm:rounded-2xl max-w-7xl mx-auto overflow-hidden" />
       
       {/* ============================================================ */}
       {/* 🌟 HERO CANVAS CONTAINER (MATCHING THE USER REFERENCE DESIGN) */}
