@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
   GraduationCap,
@@ -15,326 +15,856 @@ import {
   Layers,
   ChevronRight,
   Lock,
-  Compass
+  Compass,
+  Activity,
+  Sparkles,
+  Cpu,
+  FileSpreadsheet,
+  Clock,
+  ArrowUpRight,
+  BarChart3,
+  Target,
+  Zap,
+  Check,
+  Search,
+  Star,
+  Settings,
+  Menu,
+  X
 } from 'lucide-react';
 
 export default function HomePage() {
+  // Mobile Drawer Toggle
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Interactive Hero Telemetry Sandbox State
+  const [attVal, setAttVal] = useState<number>(68);
+  const [asgVal, setAsgVal] = useState<number>(75);
+  const [examVal, setExamVal] = useState<number>(55);
+
+  // Active Role Tab State
+  const [activeRole, setActiveRole] = useState<'superadmin' | 'dean' | 'faculty' | 'student'>('faculty');
+
+  // Active Student Case Study in Spotlight
+  const [selectedCase, setSelectedCase] = useState<number>(0);
+
+  // Real-time Deterministic Calculation for the Telemetry Lab
+  const heroRisk = useMemo(() => {
+    const A = attVal < 75 ? Math.max(0, ((75 - attVal) / 75) * 100) : 0;
+    const B = Math.max(0, 100 - asgVal);
+    const C = examVal < 60 ? Math.max(0, ((60 - examVal) / 60) * 100) : 0;
+    const score = Math.round((0.35 * A + 0.25 * B + 0.40 * C) * 10) / 10;
+    const clamped = Math.min(100, Math.max(0, score));
+
+    let category: 'LOW' | 'MEDIUM' | 'HIGH' = 'LOW';
+    let color = '#2E7D32'; // Forest green
+    let bg = '#E8F5E9';
+    let border = '#A5D6A7';
+
+    if (clamped >= 65) {
+      category = 'HIGH';
+      color = '#C62828'; // Crimson
+      bg = '#FFEBEE';
+      border = '#EF9A9A';
+    } else if (clamped >= 35) {
+      category = 'MEDIUM';
+      color = '#B78103'; // Warm amber
+      bg = '#FFF8E1';
+      border = '#FFE082';
+    }
+
+    return {
+      score: clamped,
+      category,
+      color,
+      bg,
+      border,
+      contribA: Math.round(0.35 * A * 10) / 10,
+      contribB: Math.round(0.25 * B * 10) / 10,
+      contribC: Math.round(0.40 * C * 10) / 10,
+    };
+  }, [attVal, asgVal, examVal]);
+
+  const studentCases = [
+    {
+      name: "Alex Johnson",
+      dept: "Computer Science",
+      rollNo: "CS-2023-014",
+      risk: 76.4,
+      level: "HIGH",
+      att: 52,
+      asg: 45,
+      exam: 48,
+      trend: "Declining (-19.2% sudden drop)",
+      intervention: "Attendance Monitoring & Peer Tutoring",
+      status: "In Progress"
+    },
+    {
+      name: "Priya Sharma",
+      dept: "Data Science",
+      rollNo: "DS-2023-088",
+      risk: 48.2,
+      level: "MEDIUM",
+      att: 68,
+      asg: 80,
+      exam: 55,
+      trend: "Fluctuating (Midterm Deficit)",
+      intervention: "Linear Algebra Faculty Office Hours",
+      status: "Pending Review"
+    },
+    {
+      name: "Marcus Vance",
+      dept: "Electrical Eng",
+      rollNo: "EE-2022-031",
+      risk: 14.2,
+      level: "LOW",
+      att: 94,
+      asg: 95,
+      exam: 88,
+      trend: "Consistently Strong (+4.5%)",
+      intervention: "Honors Research Assistantship",
+      status: "Nominated"
+    }
+  ];
+
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans flex flex-col">
-      {/* Institutional Top Navbar */}
-      <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-academic-500 to-academic-700 flex items-center justify-center text-oxford-950 font-black shadow-md shadow-academic-900/30">
-              <GraduationCap className="w-5 h-5 text-oxford-950" />
-            </div>
-            <div>
-              <span className="text-lg font-bold tracking-tight text-slate-900 flex items-center gap-1">
-                Student<span className="text-academic-700">360</span>
-              </span>
-              <span className="block text-[10px] uppercase tracking-wider text-slate-400 font-semibold -mt-0.5">
-                Apex Institute of Higher Technology
-              </span>
-            </div>
-          </div>
+    <div className="min-h-screen bg-[#1F1B18] text-[#F5EFEB] font-sans selection:bg-[#EADBCE] selection:text-[#2C2621] overflow-x-hidden p-2 sm:p-5 lg:p-8">
+      
+      {/* ============================================================ */}
+      {/* 🌟 HERO CANVAS CONTAINER (MATCHING THE USER REFERENCE DESIGN) */}
+      {/* ============================================================ */}
+      <div className="relative mx-auto max-w-7xl rounded-[28px] sm:rounded-[40px] lg:rounded-[48px] bg-gradient-to-b from-[#4A3F35] via-[#352D26] to-[#25201B] border border-white/20 shadow-[0_25px_70px_rgba(0,0,0,0.5)] overflow-hidden">
+        
+        {/* Ambient Warm Aurora Lighting in Hero */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-gradient-to-b from-amber-100/15 via-[#E6D5C3]/10 to-transparent blur-3xl pointer-events-none" />
+        
+        {/* 🌟 Glowing Curved Silk Ribbon (SVG Bezier Arc with Radial Glow) */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">
+          <svg
+            className="w-full h-full object-cover min-w-[700px] sm:min-w-full opacity-90"
+            viewBox="0 0 1200 650"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="none"
+          >
+            <defs>
+              <linearGradient id="silkGlow" x1="0%" y1="60%" x2="100%" y2="30%">
+                <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.05" />
+                <stop offset="35%" stopColor="#FFF9F2" stopOpacity="0.85" />
+                <stop offset="60%" stopColor="#FFFFFF" stopOpacity="1" />
+                <stop offset="85%" stopColor="#F5E8D8" stopOpacity="0.7" />
+                <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.05" />
+              </linearGradient>
 
-          <div className="hidden md:flex items-center gap-6 text-xs font-semibold text-slate-600">
-            <a href="#formula" className="hover:text-oxford-900 transition-colors">Risk Engine</a>
-            <a href="#features" className="hover:text-oxford-900 transition-colors">Platform Modules</a>
-            <a href="#roles" className="hover:text-oxford-900 transition-colors">Role Architecture</a>
-          </div>
+              <filter id="silkBlur" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="16" result="blur1" />
+                <feGaussianBlur stdDeviation="6" result="blur2" />
+                <feMerge>
+                  <feMergeNode in="blur1" />
+                  <feMergeNode in="blur2" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
 
+            {/* Glowing Diffused Ambient Under-Curve */}
+            <path
+              d="M -50 380 C 250 440, 480 470, 680 420 C 880 370, 1050 240, 1250 180"
+              stroke="#FFF2DF"
+              strokeWidth="28"
+              strokeOpacity="0.18"
+              filter="url(#silkBlur)"
+            />
+
+            {/* Crisp High-Intensity Illuminated Silk Wave */}
+            <path
+              d="M -50 380 C 250 440, 480 470, 680 420 C 880 370, 1050 240, 1250 180"
+              stroke="url(#silkGlow)"
+              strokeWidth="3.5"
+              filter="url(#silkBlur)"
+            />
+          </svg>
+        </div>
+
+        {/* ------------------------------------------------------------ */}
+        {/* INTEGRATED NAVBAR (MATCHING REFERENCE HEADER) */}
+        {/* ------------------------------------------------------------ */}
+        <header className="relative z-30 px-6 sm:px-10 lg:px-14 pt-6 sm:pt-8 flex items-center justify-between">
+          {/* Logo with Soft Rounded Square */}
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white flex items-center justify-center text-[#2C2621] shadow-md shadow-black/10 group-hover:scale-105 transition-transform duration-200">
+              <GraduationCap className="w-5 h-5 text-[#2C2621]" />
+            </div>
+            <span className="text-base sm:text-lg font-semibold tracking-tight text-white/95 font-sans">
+              Student<span className="font-bold">360</span>
+            </span>
+          </Link>
+
+          {/* Center Links (Clean & Airy) */}
+          <nav className="hidden md:flex items-center gap-8 text-xs font-medium text-[#E0D7CD] tracking-wide">
+            <a href="#about" className="hover:text-white transition-colors">About</a>
+            <a href="#formula" className="hover:text-white transition-colors">Risk Engine</a>
+            <a href="#capabilities" className="hover:text-white transition-colors">Services</a>
+            <a href="#roles" className="hover:text-white transition-colors">Governance</a>
+          </nav>
+
+          {/* Right Action: Pill Outlined Signin Button */}
           <div className="flex items-center gap-3">
             <Link
               to="/login"
-              className="px-3.5 py-1.5 text-xs font-semibold text-slate-700 hover:text-slate-900 rounded-md transition-colors"
+              className="px-5 py-1.5 rounded-full border border-white/35 text-xs font-medium text-white/95 hover:bg-white/10 hover:border-white/60 active:scale-95 transition-all"
             >
-              Sign In
+              Signin
             </Link>
-            <Link
-              to="/register"
-              className="btn-primary text-xs py-1.5 px-4 shadow-sm"
+
+            {/* Mobile Menu Button */}
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-1.5 rounded-lg text-white/80 hover:text-white hover:bg-white/10"
+              aria-label="Toggle navigation menu"
             >
-              Student Portal
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
-        </div>
-      </header>
+        </header>
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-oxford-950 text-white py-20 lg:py-28 bg-[radial-gradient(ellipse_80%_80%_at_50%_-10%,rgba(217,119,6,0.18),rgba(2,6,23,1))]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-academic-600/20 border border-academic-400/40 text-academic-300 text-xs font-semibold uppercase tracking-wider mb-6">
-            <ShieldCheck className="w-3.5 h-3.5 text-academic-400" />
-            <span>Deterministic Academic Intelligence Framework</span>
+        {/* Mobile Navigation Drawer */}
+        {mobileMenuOpen && (
+          <div className="md:hidden relative z-40 px-6 py-4 mx-6 mt-4 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/15 space-y-3 animate-fade-in text-xs font-medium">
+            <a href="#about" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 text-slate-200 hover:text-white">About Platform</a>
+            <a href="#formula" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 text-slate-200 hover:text-white">Deterministic Risk Engine</a>
+            <a href="#capabilities" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 text-slate-200 hover:text-white">Services & Capabilities</a>
+            <a href="#roles" onClick={() => setMobileMenuOpen(false)} className="block py-1.5 text-slate-200 hover:text-white">Institutional Governance</a>
+            <div className="pt-2 border-t border-white/10 flex gap-2">
+              <Link to="/login" className="flex-1 py-2 text-center rounded-lg bg-white/10 text-white font-semibold">Sign In</Link>
+              <Link to="/register" className="flex-1 py-2 text-center rounded-lg bg-white text-[#2C2621] font-semibold">Register</Link>
+            </div>
+          </div>
+        )}
+
+        {/* ------------------------------------------------------------ */}
+        {/* CENTER HERO CONTENT (MATCHING REFERENCE COMPOSITION) */}
+        {/* ------------------------------------------------------------ */}
+        <div className="relative z-20 px-6 sm:px-10 lg:px-14 pt-14 sm:pt-20 lg:pt-24 pb-14 text-center max-w-3xl mx-auto">
+          {/* Subtle Pill Outline Badge */}
+          <div className="inline-flex items-center justify-center px-4 py-1 rounded-full border border-white/30 bg-white/5 backdrop-blur-xs text-[11px] uppercase tracking-widest text-white/90 font-medium mb-6">
+            DISCOVER STUDENT360
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-tight">
-            Early Academic Intervention & Retention Governance Platform
+          {/* Display Headline */}
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.15]">
+            Start your journey
           </h1>
 
-          <p className="mt-6 text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed font-normal">
+          {/* Subtitle */}
+          <p className="mt-5 text-sm sm:text-base text-[#E2DACD] leading-relaxed max-w-xl mx-auto font-normal">
             Eliminate student dropouts with explainable multi-signal telemetry. Powered by open mathematical risk modeling, automated trend detection, and simulated remedial trajectories.
           </p>
 
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3.5">
+          {/* Primary Pill Button */}
+          <div className="mt-8 flex justify-center">
             <Link
               to="/login"
-              className="btn-accent px-6 py-2.5 text-sm font-semibold shadow-md"
+              className="inline-flex items-center justify-center px-8 py-3.5 rounded-2xl bg-[#FAF7F2] text-[#2C2621] font-semibold text-sm shadow-xl shadow-black/15 hover:bg-white hover:scale-[1.02] active:scale-[0.98] transition-all"
             >
-              <span>Access Institutional Portal</span>
-              <ArrowRight className="w-4 h-4" />
+              Get Started
             </Link>
-            <Link
-              to="/register"
-              className="btn-secondary px-6 py-2.5 text-sm font-semibold bg-white/10 text-white border-white/20 hover:bg-white/20"
-            >
-              <span>New Student Enrollment</span>
-            </Link>
-          </div>
-
-          {/* Key Assurance Metric Chips */}
-          <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto text-left">
-            <div className="p-3.5 rounded-lg bg-white/5 border border-white/10 backdrop-blur-xs">
-              <span className="text-[10px] text-academic-300 font-bold uppercase tracking-wider">Formula Transparency</span>
-              <p className="text-sm font-bold text-white mt-0.5">100% Deterministic</p>
-              <span className="text-[11px] text-slate-400">Zero Black-Box Guesswork</span>
-            </div>
-            <div className="p-3.5 rounded-lg bg-white/5 border border-white/10 backdrop-blur-xs">
-              <span className="text-[10px] text-academic-300 font-bold uppercase tracking-wider">Early Alerts</span>
-              <p className="text-sm font-bold text-white mt-0.5">4 Risk Vectors</p>
-              <span className="text-[11px] text-slate-400">Attendance & Grade Shifts</span>
-            </div>
-            <div className="p-3.5 rounded-lg bg-white/5 border border-white/10 backdrop-blur-xs">
-              <span className="text-[10px] text-academic-300 font-bold uppercase tracking-wider">Governance</span>
-              <p className="text-sm font-bold text-white mt-0.5">Central CMS</p>
-              <span className="text-[11px] text-slate-400">Super Admin Complete Control</span>
-            </div>
-            <div className="p-3.5 rounded-lg bg-white/5 border border-white/10 backdrop-blur-xs">
-              <span className="text-[10px] text-academic-300 font-bold uppercase tracking-wider">Student Care</span>
-              <p className="text-sm font-bold text-white mt-0.5">360° Ledgers</p>
-              <span className="text-[11px] text-slate-400">Private Student Portal</span>
-            </div>
           </div>
         </div>
-      </section>
 
-      {/* Section: Deterministic Risk Equation Breakdown */}
-      <section id="formula" className="py-16 bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-xs font-bold text-academic-800 uppercase tracking-wider">
-              Transparent Mathematical Modeling
-            </h2>
-            <p className="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-              How Risk Is Computed: Explainable & Auditable
-            </p>
-            <p className="mt-2 text-xs text-slate-500">
-              No black-box machine learning models deciding academic status. Every stakeholder can verify calculations down to the exact examination score and class attendance date.
-            </p>
+        {/* ------------------------------------------------------------ */}
+        {/* BOTTOM FLOATING FROSTED CARDS (EXACT MATCH TO REFERENCE) */}
+        {/* ------------------------------------------------------------ */}
+        <div className="relative z-20 px-6 sm:px-10 lg:px-14 pb-8 sm:pb-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+            
+            {/* Card 1: Rating / Precision */}
+            <div className="rounded-2xl sm:rounded-3xl bg-[#FAF6F0]/90 backdrop-blur-md p-6 sm:p-7 text-[#2D2721] shadow-lg shadow-black/10 transition-transform duration-200 hover:-translate-y-0.5">
+              <div className="flex items-center gap-1 text-amber-500 mb-3">
+                <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
+                <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
+                <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
+                <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
+                <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
+                <span className="text-sm font-bold text-[#2D2721] ml-1.5 font-mono">4.8 / 5.0</span>
+              </div>
+              <h3 className="text-base font-bold text-[#2D2721]">
+                99.4% Early Detection
+              </h3>
+              <p className="text-xs text-[#6F6459] mt-2 leading-relaxed">
+                Explainable student telemetry flags academic decline weeks before finals with zero black-box guesswork.
+              </p>
+            </div>
+
+            {/* Card 2: Emblem / Feature Headline */}
+            <div className="rounded-2xl sm:rounded-3xl bg-[#FAF6F0]/90 backdrop-blur-md p-6 sm:p-7 text-[#2D2721] shadow-lg shadow-black/10 transition-transform duration-200 hover:-translate-y-0.5">
+              <div className="flex items-center gap-2.5 mb-3">
+                <div className="w-7 h-7 rounded-lg bg-[#EAE2D7] text-[#2D2721] flex items-center justify-center">
+                  <Settings className="w-4 h-4 text-[#2D2721]" />
+                </div>
+                <span className="text-base font-bold text-[#2D2721]">
+                  Deterministic Risk
+                </span>
+              </div>
+              <p className="text-xs text-[#6F6459] mt-2 leading-relaxed">
+                R = 0.35A + 0.25B + 0.40C auditable by faculty councils, deans, and student union representatives.
+              </p>
+            </div>
+
+            {/* Card 3: Big 87% Display Numeral */}
+            <div className="rounded-2xl sm:rounded-3xl bg-[#FAF6F0]/90 backdrop-blur-md p-6 sm:p-7 text-[#2D2721] shadow-lg shadow-black/10 transition-transform duration-200 hover:-translate-y-0.5">
+              <div className="text-3xl sm:text-4xl font-extrabold text-[#2D2721] font-mono tracking-tight">
+                87%
+              </div>
+              <p className="text-xs text-[#6F6459] mt-2 leading-relaxed">
+                Intervention recovery rate achieved when simulated attendance and test remediation plans are enacted early.
+              </p>
+            </div>
+
           </div>
 
-          <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Factor A */}
-            <div className="p-6 rounded-xl border border-slate-200 bg-slate-50/60 relative overflow-hidden">
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-oxford-900 text-white uppercase tracking-wider">
-                Weight: 35%
-              </span>
-              <h3 className="text-base font-bold text-slate-900 mt-3">Attendance Velocity (A)</h3>
-              <p className="text-xs text-slate-600 mt-1">
-                Monitors class lecture presence across all enrolled subjects against the statutory 75% quota.
-              </p>
-              <div className="mt-4 p-3 rounded bg-white border border-slate-200 font-mono text-xs text-slate-800">
-                A = max(0, ((75 - att%) / 75) * 100)
-              </div>
-            </div>
-
-            {/* Factor B */}
-            <div className="p-6 rounded-xl border border-slate-200 bg-slate-50/60 relative overflow-hidden">
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-academic-700 text-white uppercase tracking-wider">
-                Weight: 25%
-              </span>
-              <h3 className="text-base font-bold text-slate-900 mt-3">Coursework Completion (B)</h3>
-              <p className="text-xs text-slate-600 mt-1">
-                Tracks ongoing assignment submissions, lab exercises, and deadline adherence.
-              </p>
-              <div className="mt-4 p-3 rounded bg-white border border-slate-200 font-mono text-xs text-slate-800">
-                B = 100 - assignment_completion%
-              </div>
-            </div>
-
-            {/* Factor C */}
-            <div className="p-6 rounded-xl border border-slate-200 bg-slate-50/60 relative overflow-hidden">
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-oxford-900 text-white uppercase tracking-wider">
-                Weight: 40%
-              </span>
-              <h3 className="text-base font-bold text-slate-900 mt-3">Internal Test Marks (C)</h3>
-              <p className="text-xs text-slate-600 mt-1">
-                Aggregates internal assessments and periodic midterms against the 60% baseline pass mark.
-              </p>
-              <div className="mt-4 p-3 rounded bg-white border border-slate-200 font-mono text-xs text-slate-800">
-                C = max(0, ((60 - marks%) / 60) * 100)
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-6 p-4 rounded-xl bg-oxford-900 text-white text-center font-mono text-xs max-w-xl mx-auto shadow-md">
-            Composite Risk Index: <span className="text-academic-400 font-bold">R = 0.35A + 0.25B + 0.40C</span>
-            <span className="block text-[11px] text-slate-400 font-sans mt-0.5">
-              Low: 0–29 • Medium: 30–59 • High: 60–100
+          {/* Floating Pill Tag (Bottom Left - "Visit site" style) */}
+          <div className="mt-4 flex items-center justify-between text-xs text-white/60">
+            <Link
+              to="/login"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white/15 text-white/80 hover:text-white border border-white/15 transition-all text-[11px]"
+            >
+              <ArrowUpRight className="w-3.5 h-3.5" />
+              <span>Institutional Portal</span>
+            </Link>
+            <span className="text-[11px] font-mono text-white/40">
+              Apex Institute of Higher Technology
             </span>
           </div>
         </div>
-      </section>
 
-      {/* Section: Platform Capabilities */}
-      <section id="features" className="py-16 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-xs font-bold text-academic-800 uppercase tracking-wider">
-              Comprehensive Capabilities
-            </h2>
-            <p className="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-              Built for Academic Deans, Mentors & Students
-            </p>
-          </div>
+      </div>
 
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="card-surface p-6 space-y-3">
-              <div className="w-10 h-10 rounded-lg bg-oxford-900 text-academic-400 flex items-center justify-center font-bold">
-                <TrendingDown className="w-5 h-5" />
+      {/* ============================================================ */}
+      {/* SECTION: LIVE TELEMETRY LAB & RECOVERY SANDBOX */}
+      {/* ============================================================ */}
+      <section id="about" className="max-w-7xl mx-auto mt-16 sm:mt-24 px-4 sm:px-6">
+        <div className="rounded-[32px] sm:rounded-[40px] bg-[#2A241F] border border-white/10 p-6 sm:p-10 lg:p-12 shadow-2xl">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            
+            {/* Left: Interactive Telemetry Controls */}
+            <div className="lg:col-span-6 space-y-6">
+              <div>
+                <span className="inline-block px-3 py-1 rounded-full border border-white/20 bg-white/5 text-[10px] font-mono uppercase tracking-wider text-[#EADBCE]">
+                  Interactive Telemetry Sandbox
+                </span>
+                <h2 className="text-2xl sm:text-4xl font-bold text-white mt-3 tracking-tight">
+                  Test the Deterministic Engine
+                </h2>
+                <p className="mt-2 text-xs sm:text-sm text-[#C8BEB2] leading-relaxed">
+                  Drag the sliders to see how real-time attendance, assignment submissions, and internal test marks synthesize into an auditable composite score.
+                </p>
               </div>
-              <h3 className="text-sm font-bold text-slate-900">Algorithmic Trend Alerts (Feature 1)</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Automatically identifies consecutive attendance declines, progressive drops in test marks, and sudden score drops (&gt;15%) before finals arrive.
-              </p>
+
+              {/* Sliders */}
+              <div className="space-y-4 pt-2">
+                <div>
+                  <div className="flex justify-between text-xs font-mono mb-1.5">
+                    <span className="text-[#EADBCE]">Lecture Attendance (A)</span>
+                    <span className={`font-bold ${attVal < 75 ? 'text-rose-400' : 'text-emerald-400'}`}>
+                      {attVal}% <span className="text-[10px] text-white/40">(Statutory: 75%)</span>
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min="30"
+                    max="100"
+                    value={attVal}
+                    onChange={(e) => setAttVal(Number(e.target.value))}
+                    className="w-full h-2 bg-[#1A1613] rounded-lg appearance-none cursor-pointer accent-[#FAF7F2]"
+                  />
+                </div>
+
+                <div>
+                  <div className="flex justify-between text-xs font-mono mb-1.5">
+                    <span className="text-[#EADBCE]">Assignment Completion (B)</span>
+                    <span className={`font-bold ${asgVal < 60 ? 'text-rose-400' : 'text-emerald-400'}`}>
+                      {asgVal}% <span className="text-[10px] text-white/40">(Target: 100%)</span>
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min="20"
+                    max="100"
+                    value={asgVal}
+                    onChange={(e) => setAsgVal(Number(e.target.value))}
+                    className="w-full h-2 bg-[#1A1613] rounded-lg appearance-none cursor-pointer accent-[#FAF7F2]"
+                  />
+                </div>
+
+                <div>
+                  <div className="flex justify-between text-xs font-mono mb-1.5">
+                    <span className="text-[#EADBCE]">Midterm Exam Score (C)</span>
+                    <span className={`font-bold ${examVal < 60 ? 'text-rose-400' : 'text-emerald-400'}`}>
+                      {examVal}% <span className="text-[10px] text-white/40">(Pass: 60%)</span>
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min="20"
+                    max="100"
+                    value={examVal}
+                    onChange={(e) => setExamVal(Number(e.target.value))}
+                    className="w-full h-2 bg-[#1A1613] rounded-lg appearance-none cursor-pointer accent-[#FAF7F2]"
+                  />
+                </div>
+              </div>
+
+              {/* Quick Presets */}
+              <div className="flex flex-wrap items-center gap-2 pt-2">
+                <span className="text-[11px] font-mono text-white/50">Load Profile:</span>
+                <button
+                  type="button"
+                  onClick={() => { setAttVal(52); setAsgVal(45); setExamVal(48); }}
+                  className="px-2.5 py-1 rounded-lg bg-rose-500/15 text-rose-300 hover:bg-rose-500/25 text-xs font-mono font-semibold border border-rose-500/30 transition-colors"
+                >
+                  High Risk (52%)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setAttVal(68); setAsgVal(75); setExamVal(58); }}
+                  className="px-2.5 py-1 rounded-lg bg-amber-500/15 text-amber-300 hover:bg-amber-500/25 text-xs font-mono font-semibold border border-amber-500/30 transition-colors"
+                >
+                  Borderline (68%)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setAttVal(92); setAsgVal(95); setExamVal(88); }}
+                  className="px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 text-xs font-mono font-semibold border border-emerald-500/30 transition-colors"
+                >
+                  Compliant (92%)
+                </button>
+              </div>
             </div>
 
-            <div className="card-surface p-6 space-y-3">
-              <div className="w-10 h-10 rounded-lg bg-academic-600 text-oxford-950 flex items-center justify-center font-bold">
-                <Sliders className="w-5 h-5" />
+            {/* Right: Dynamic Output Card Styled in Porcelain Glass */}
+            <div className="lg:col-span-6">
+              <div className="rounded-3xl bg-[#FAF6F0] p-6 sm:p-8 text-[#2D2721] shadow-2xl">
+                <div className="flex items-center justify-between pb-4 border-b border-[#EAE2D7]">
+                  <span className="text-xs uppercase font-bold tracking-wider text-[#7A6E63] font-mono">
+                    Telemetry Output
+                  </span>
+                  <span
+                    className="px-3 py-1 rounded-full text-xs font-bold font-mono tracking-wider"
+                    style={{
+                      backgroundColor: heroRisk.bg,
+                      color: heroRisk.color,
+                      border: `1px solid ${heroRisk.border}`
+                    }}
+                  >
+                    {heroRisk.category} RISK
+                  </span>
+                </div>
+
+                {/* Big Score Dial */}
+                <div className="py-6 text-center">
+                  <div className="text-6xl sm:text-7xl font-extrabold text-[#2D2721] font-mono tracking-tight">
+                    {heroRisk.score}
+                  </div>
+                  <span className="text-xs text-[#7A6E63] font-mono mt-1 block">
+                    Composite Risk Index (out of 100)
+                  </span>
+                </div>
+
+                {/* Factor Decomposition */}
+                <div className="grid grid-cols-3 gap-2.5 pt-4 border-t border-[#EAE2D7] text-left">
+                  <div className="bg-[#EFE8DD] p-2.5 rounded-xl">
+                    <span className="text-[10px] text-[#7A6E63] font-mono block">Att (35%)</span>
+                    <span className="text-xs font-bold text-[#2D2721] font-mono">+{heroRisk.contribA} pts</span>
+                  </div>
+                  <div className="bg-[#EFE8DD] p-2.5 rounded-xl">
+                    <span className="text-[10px] text-[#7A6E63] font-mono block">Asg (25%)</span>
+                    <span className="text-xs font-bold text-[#2D2721] font-mono">+{heroRisk.contribB} pts</span>
+                  </div>
+                  <div className="bg-[#EFE8DD] p-2.5 rounded-xl">
+                    <span className="text-[10px] text-[#7A6E63] font-mono block">Exam (40%)</span>
+                    <span className="text-xs font-bold text-[#2D2721] font-mono">+{heroRisk.contribC} pts</span>
+                  </div>
+                </div>
+
+                <div className="mt-4 pt-3 text-[11px] text-[#7A6E63] font-mono text-center">
+                  Formula: R = 0.35A + 0.25B + 0.40C • 100% Deterministic
+                </div>
               </div>
-              <h3 className="text-sm font-bold text-slate-900">Recovery Simulator (Feature 2)</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Interactive "what-if" modeling sandbox for faculty mentors. Slide attendance and assignment goals to instantly recalculate projected risk score mitigation.
-              </p>
             </div>
 
-            <div className="card-surface p-6 space-y-3">
-              <div className="w-10 h-10 rounded-lg bg-oxford-900 text-academic-400 flex items-center justify-center font-bold">
-                <ShieldCheck className="w-5 h-5" />
-              </div>
-              <h3 className="text-sm font-bold text-slate-900">Super Admin CMS</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Centralized command console to add, edit, or purge users, departments, subjects, announcements, site settings, and audit logs with zero technical friction.
-              </p>
-            </div>
-
-            <div className="card-surface p-6 space-y-3">
-              <div className="w-10 h-10 rounded-lg bg-slate-800 text-white flex items-center justify-center font-bold">
-                <AlertTriangle className="w-5 h-5" />
-              </div>
-              <h3 className="text-sm font-bold text-slate-900">Intervention Case Lifecycle</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Track formal remedial contracts across four defined states: Pending, In Progress, Completed, and Evaluated with mentor logs and improvement metrics.
-              </p>
-            </div>
-
-            <div className="card-surface p-6 space-y-3">
-              <div className="w-10 h-10 rounded-lg bg-slate-800 text-white flex items-center justify-center font-bold">
-                <BookOpen className="w-5 h-5" />
-              </div>
-              <h3 className="text-sm font-bold text-slate-900">Subject-by-Subject Ledgers</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Full academic history detailing individual course attendance rates, assignment submission scores, and internal test progressions.
-              </p>
-            </div>
-
-            <div className="card-surface p-6 space-y-3">
-              <div className="w-10 h-10 rounded-lg bg-emerald-700 text-white flex items-center justify-center font-bold">
-                <CheckCircle2 className="w-5 h-5" />
-              </div>
-              <h3 className="text-sm font-bold text-slate-900">Private Student Portal</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Dedicated student view providing full transparency into personal standing, statutory attendance quotas, and assigned mentor recommendations.
-              </p>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* Section: Role Pathways */}
-      <section id="roles" className="py-16 bg-white border-t border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-xs font-bold text-academic-800 uppercase tracking-wider">
-              Role-Based Architecture
-            </h2>
-            <p className="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-              Tailored Experiences by Institutional Responsibility
+      {/* ============================================================ */}
+      {/* SECTION: MATHEMATICAL AUDIT & EQUATION BREAKDOWN */}
+      {/* ============================================================ */}
+      <section id="formula" className="max-w-7xl mx-auto mt-16 sm:mt-24 px-4 sm:px-6">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+          <span className="inline-block px-3 py-1 rounded-full border border-white/20 bg-white/5 text-[10px] font-mono uppercase tracking-widest text-[#EADBCE]">
+            Mathematical Auditing
+          </span>
+          <h2 className="text-2xl sm:text-4xl font-bold text-white mt-3 tracking-tight">
+            How Risk Is Calculated
+          </h2>
+          <p className="mt-2 text-xs sm:text-sm text-[#C8BEB2]">
+            Zero black-box neural networks deciding academic futures. Transparent, provable math.
+          </p>
+        </div>
+
+        {/* 3 Component Breakdown Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+          
+          <div className="rounded-3xl bg-[#2A241F] border border-white/10 p-6 sm:p-7 text-left hover:border-white/30 transition-all">
+            <div className="flex items-center justify-between mb-3">
+              <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-[10px] font-mono uppercase font-bold text-[#EADBCE]">
+                Weight: 35%
+              </span>
+              <span className="text-xs font-mono text-white/40">Factor A</span>
+            </div>
+            <h3 className="text-lg font-bold text-white">Attendance Velocity</h3>
+            <p className="text-xs text-[#C8BEB2] mt-2 leading-relaxed">
+              Monitors lecture session presence against the statutory 75% institutional quota.
+            </p>
+            <div className="mt-4 p-3 rounded-xl bg-black/40 border border-white/5 font-mono text-[11px] text-[#FAF7F2]">
+              A = max(0, ((75 - Att%) / 75) * 100)
+            </div>
+          </div>
+
+          <div className="rounded-3xl bg-[#2A241F] border border-white/10 p-6 sm:p-7 text-left hover:border-white/30 transition-all">
+            <div className="flex items-center justify-between mb-3">
+              <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-[10px] font-mono uppercase font-bold text-[#EADBCE]">
+                Weight: 25%
+              </span>
+              <span className="text-xs font-mono text-white/40">Factor B</span>
+            </div>
+            <h3 className="text-lg font-bold text-white">Continuous Coursework</h3>
+            <p className="text-xs text-[#C8BEB2] mt-2 leading-relaxed">
+              Tracks ongoing laboratory submissions, homework deliverables, and deadlines.
+            </p>
+            <div className="mt-4 p-3 rounded-xl bg-black/40 border border-white/5 font-mono text-[11px] text-[#FAF7F2]">
+              B = 100 - Assignment_Completion%
+            </div>
+          </div>
+
+          <div className="rounded-3xl bg-[#2A241F] border border-white/10 p-6 sm:p-7 text-left hover:border-white/30 transition-all">
+            <div className="flex items-center justify-between mb-3">
+              <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-[10px] font-mono uppercase font-bold text-[#EADBCE]">
+                Weight: 40%
+              </span>
+              <span className="text-xs font-mono text-white/40">Factor C</span>
+            </div>
+            <h3 className="text-lg font-bold text-white">Midterm Exam Marks</h3>
+            <p className="text-xs text-[#C8BEB2] mt-2 leading-relaxed">
+              Aggregates periodic midterms and quizzes against the 60% passing benchmark.
+            </p>
+            <div className="mt-4 p-3 rounded-xl bg-black/40 border border-white/5 font-mono text-[11px] text-[#FAF7F2]">
+              C = max(0, ((60 - Exam%) / 60) * 100)
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ============================================================ */}
+      {/* SECTION: PLATFORM SERVICES & BENTO CAPABILITIES */}
+      {/* ============================================================ */}
+      <section id="capabilities" className="max-w-7xl mx-auto mt-16 sm:mt-24 px-4 sm:px-6">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+          <span className="inline-block px-3 py-1 rounded-full border border-white/20 bg-white/5 text-[10px] font-mono uppercase tracking-widest text-[#EADBCE]">
+            Modular Services
+          </span>
+          <h2 className="text-2xl sm:text-4xl font-bold text-white mt-3 tracking-tight">
+            Comprehensive Retention Platform
+          </h2>
+          <p className="mt-2 text-xs sm:text-sm text-[#C8BEB2]">
+            Equipping deans, mentors, and students with proactive tools.
+          </p>
+        </div>
+
+        {/* Bento Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6">
+          
+          {/* Card 1: Trend Alerts (Feature 1) */}
+          <div className="md:col-span-7 rounded-3xl bg-[#2A241F] border border-white/10 p-6 sm:p-8 text-left flex flex-col justify-between hover:border-white/30 transition-all">
+            <div>
+              <div className="w-10 h-10 rounded-xl bg-white/10 text-white flex items-center justify-center mb-4">
+                <TrendingDown className="w-5 h-5 text-[#FAF7F2]" />
+              </div>
+              <h3 className="text-xl font-bold text-white">
+                Algorithmic Trend Alerts (Feature 1)
+              </h3>
+              <p className="text-xs sm:text-sm text-[#C8BEB2] mt-2 leading-relaxed">
+                Flags downward performance momentum automatically: consecutive exam drops, absenteeism streaks, and sudden score collapses (&gt;15%).
+              </p>
+
+              {/* Trajectory Preview */}
+              <div className="mt-6 p-4 rounded-2xl bg-black/30 border border-white/5">
+                <div className="flex justify-between text-xs font-mono text-white/50 mb-2">
+                  <span>Term Trajectory</span>
+                  <span className="text-rose-400 font-bold">Sudden Drop Detected (-19%)</span>
+                </div>
+                <div className="h-16 flex items-end justify-between gap-2 pt-2">
+                  <div className="flex-1 bg-white/20 h-12 rounded-t text-center"><span className="text-[9px] font-mono text-white/60">T1 74%</span></div>
+                  <div className="flex-1 bg-white/20 h-10 rounded-t text-center"><span className="text-[9px] font-mono text-white/60">T2 68%</span></div>
+                  <div className="flex-1 bg-white/20 h-9 rounded-t text-center"><span className="text-[9px] font-mono text-white/60">T3 61%</span></div>
+                  <div className="flex-1 bg-rose-500 h-6 rounded-t text-center shadow-lg shadow-rose-500/20"><span className="text-[9px] font-mono text-white font-bold">T4 48%</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 2: Recovery Simulator (Feature 2) */}
+          <div className="md:col-span-5 rounded-3xl bg-[#2A241F] border border-white/10 p-6 sm:p-8 text-left flex flex-col justify-between hover:border-white/30 transition-all">
+            <div>
+              <div className="w-10 h-10 rounded-xl bg-white/10 text-white flex items-center justify-center mb-4">
+                <Sliders className="w-5 h-5 text-[#FAF7F2]" />
+              </div>
+              <h3 className="text-xl font-bold text-white">
+                Recovery Simulator (Feature 2)
+              </h3>
+              <p className="text-xs sm:text-sm text-[#C8BEB2] mt-2 leading-relaxed">
+                Mentors test "what-if" recovery hypotheses: determine the minimal attendance jump or test score needed to pull a student out of danger.
+              </p>
+
+              <div className="mt-6 p-4 rounded-2xl bg-black/30 border border-white/5 font-mono text-xs space-y-2">
+                <div className="flex justify-between text-white/50">
+                  <span>Current Baseline:</span>
+                  <span className="text-rose-400 font-bold">76.4 High Risk</span>
+                </div>
+                <div className="flex justify-between text-emerald-400 font-bold pt-1 border-t border-white/10">
+                  <span>Simulated +15% Att:</span>
+                  <span>28.1 SAFE ZONE</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 3: Central CMS */}
+          <div className="md:col-span-4 rounded-3xl bg-[#2A241F] border border-white/10 p-6 text-left hover:border-white/30 transition-all">
+            <div className="w-9 h-9 rounded-xl bg-white/10 text-white flex items-center justify-center mb-3">
+              <ShieldCheck className="w-5 h-5 text-[#FAF7F2]" />
+            </div>
+            <h4 className="text-base font-bold text-white">Central CMS Console</h4>
+            <p className="text-xs text-[#C8BEB2] mt-1.5 leading-relaxed">
+              Super Admin control over users, departments, curriculum, and systemic threshold weights.
             </p>
           </div>
 
-          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="p-5 rounded-lg border border-slate-200 bg-slate-50 text-left">
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-academic-600 text-white uppercase">
-                Super Admin
-              </span>
-              <h4 className="text-sm font-bold text-slate-900 mt-2">Central CMS Governance</h4>
-              <p className="text-xs text-slate-500 mt-1">
-                Full authority over users, curriculum, system risk thresholds, broadcast notices, and audit trails.
-              </p>
+          {/* Card 4: Remedial Contracts */}
+          <div className="md:col-span-4 rounded-3xl bg-[#2A241F] border border-white/10 p-6 text-left hover:border-white/30 transition-all">
+            <div className="w-9 h-9 rounded-xl bg-white/10 text-white flex items-center justify-center mb-3">
+              <Target className="w-5 h-5 text-[#FAF7F2]" />
+            </div>
+            <h4 className="text-base font-bold text-white">Intervention Lifecycle</h4>
+            <p className="text-xs text-[#C8BEB2] mt-1.5 leading-relaxed">
+              Track remedial contracts across 4 defined states: Pending, In Progress, Completed, Evaluated.
+            </p>
+          </div>
+
+          {/* Card 5: Student 360 Portal */}
+          <div className="md:col-span-4 rounded-3xl bg-[#2A241F] border border-white/10 p-6 text-left hover:border-white/30 transition-all">
+            <div className="w-9 h-9 rounded-xl bg-white/10 text-white flex items-center justify-center mb-3">
+              <Users className="w-5 h-5 text-[#FAF7F2]" />
+            </div>
+            <h4 className="text-base font-bold text-white">Private Student Portal</h4>
+            <p className="text-xs text-[#C8BEB2] mt-1.5 leading-relaxed">
+              Clear personal attendance tallies, upcoming deadlines, and mentor guidance feedback.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ============================================================ */}
+      {/* SECTION: LIVE COHORT SPOTLIGHT */}
+      {/* ============================================================ */}
+      <section className="max-w-7xl mx-auto mt-16 sm:mt-24 px-4 sm:px-6">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+          <div>
+            <span className="inline-block px-3 py-1 rounded-full border border-white/20 bg-white/5 text-[10px] font-mono uppercase tracking-widest text-[#EADBCE]">
+              Cohort Dossier
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-bold text-white mt-2 tracking-tight">
+              Real-Time Student Telemetry
+            </h2>
+          </div>
+          <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-[#2A241F] border border-white/10 overflow-x-auto max-w-full">
+            {studentCases.map((s, idx) => (
+              <button
+                key={s.rollNo}
+                type="button"
+                onClick={() => setSelectedCase(idx)}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all shrink-0 ${
+                  selectedCase === idx
+                    ? 'bg-[#FAF6F0] text-[#2D2721] font-bold shadow-md'
+                    : 'text-white/60 hover:text-white'
+                }`}
+              >
+                {s.name}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Selected Dossier Panel */}
+        <div className="rounded-3xl bg-[#FAF6F0] p-6 sm:p-8 text-[#2D2721] shadow-2xl">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
+            
+            <div className="lg:col-span-5 space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl bg-[#EAE2D7] flex items-center justify-center font-bold text-lg font-mono">
+                  {studentCases[selectedCase].name.split(' ').map(n => n[0]).join('')}
+                </div>
+                <div>
+                  <h4 className="text-xl font-bold text-[#2D2721]">{studentCases[selectedCase].name}</h4>
+                  <span className="text-xs font-mono text-[#7A6E63]">
+                    {studentCases[selectedCase].rollNo} • {studentCases[selectedCase].dept}
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-[#EFE8DD]">
+                <div className="flex items-baseline justify-between">
+                  <span className="text-xs font-mono text-[#7A6E63] uppercase">Composite Risk</span>
+                  <span className={`text-3xl font-black font-mono ${
+                    studentCases[selectedCase].level === 'HIGH' ? 'text-rose-700' :
+                    studentCases[selectedCase].level === 'MEDIUM' ? 'text-amber-700' : 'text-emerald-700'
+                  }`}>
+                    {studentCases[selectedCase].risk} / 100
+                  </span>
+                </div>
+                <div className="text-xs font-mono text-[#7A6E63] mt-2">
+                  Trend: <strong>{studentCases[selectedCase].trend}</strong>
+                </div>
+              </div>
             </div>
 
-            <div className="p-5 rounded-lg border border-slate-200 bg-slate-50 text-left">
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-oxford-800 text-white uppercase">
-                Deans & HODs
-              </span>
-              <h4 className="text-sm font-bold text-slate-900 mt-2">Division Telemetry</h4>
-              <p className="text-xs text-slate-500 mt-1">
-                Cross-departmental comparisons, aggregate risk stratification, and batch CSV records ingestion.
-              </p>
+            {/* Metrics Breakdown */}
+            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="p-4 rounded-2xl bg-[#EFE8DD]">
+                <span className="text-[11px] font-mono text-[#7A6E63] block">Attendance</span>
+                <span className="text-2xl font-bold text-[#2D2721] font-mono mt-1 block">
+                  {studentCases[selectedCase].att}%
+                </span>
+                <span className="text-[10px] text-[#7A6E63] font-mono">Statutory: 75%</span>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-[#EFE8DD]">
+                <span className="text-[11px] font-mono text-[#7A6E63] block">Assignments</span>
+                <span className="text-2xl font-bold text-[#2D2721] font-mono mt-1 block">
+                  {studentCases[selectedCase].asg}%
+                </span>
+                <span className="text-[10px] text-[#7A6E63] font-mono">Target: 100%</span>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-[#EFE8DD]">
+                <span className="text-[11px] font-mono text-[#7A6E63] block">Exam Score</span>
+                <span className="text-2xl font-bold text-[#2D2721] font-mono mt-1 block">
+                  {studentCases[selectedCase].exam}%
+                </span>
+                <span className="text-[10px] text-[#7A6E63] font-mono">Passing: 60%</span>
+              </div>
             </div>
 
-            <div className="p-5 rounded-lg border border-slate-200 bg-slate-50 text-left">
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-700 text-white uppercase">
-                Faculty Mentors
-              </span>
-              <h4 className="text-sm font-bold text-slate-900 mt-2">Dossiers & Simulator</h4>
-              <p className="text-xs text-slate-500 mt-1">
-                Inspect individual 360 dossiers, run hypothetical recovery models, and assign remedial interventions.
-              </p>
-            </div>
-
-            <div className="p-5 rounded-lg border border-slate-200 bg-slate-50 text-left">
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-700 text-white uppercase">
-                Enrolled Students
-              </span>
-              <h4 className="text-sm font-bold text-slate-900 mt-2">Personal 360 Portal</h4>
-              <p className="text-xs text-slate-500 mt-1">
-                Check personal attendance percentages, upcoming assignment tasks, and mentor guidance notes.
-              </p>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* Institutional Footer */}
-      <footer className="mt-auto bg-oxford-950 text-slate-400 py-10 border-t border-oxford-900 text-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      {/* ============================================================ */}
+      {/* SECTION: INSTITUTIONAL GOVERNANCE ROLE MATRIX */}
+      {/* ============================================================ */}
+      <section id="roles" className="max-w-7xl mx-auto mt-16 sm:mt-24 px-4 sm:px-6">
+        <div className="text-center max-w-3xl mx-auto mb-10">
+          <span className="inline-block px-3 py-1 rounded-full border border-white/20 bg-white/5 text-[10px] font-mono uppercase tracking-widest text-[#EADBCE]">
+            Institutional Roles
+          </span>
+          <h2 className="text-2xl sm:text-4xl font-bold text-white mt-2 tracking-tight">
+            Tailored by Academic Responsibility
+          </h2>
+        </div>
+
+        {/* Switcher */}
+        <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
+          {(['superadmin', 'dean', 'faculty', 'student'] as const).map((r) => (
+            <button
+              key={r}
+              type="button"
+              onClick={() => setActiveRole(r)}
+              className={`px-5 py-2 rounded-2xl text-xs font-semibold uppercase tracking-wider transition-all ${
+                activeRole === r
+                  ? 'bg-[#FAF7F2] text-[#2C2621] shadow-lg'
+                  : 'bg-white/5 text-white/60 hover:text-white hover:bg-white/10'
+              }`}
+            >
+              {r === 'superadmin' ? 'Super Admin' : r === 'dean' ? 'Deans / HODs' : r === 'faculty' ? 'Faculty Mentors' : 'Students'}
+            </button>
+          ))}
+        </div>
+
+        {/* Panel */}
+        <div className="rounded-3xl bg-[#2A241F] border border-white/10 p-6 sm:p-8 text-left max-w-4xl mx-auto">
+          {activeRole === 'superadmin' && (
+            <div className="space-y-3">
+              <h3 className="text-xl font-bold text-white">Super Administrator Authority</h3>
+              <p className="text-xs sm:text-sm text-[#C8BEB2] leading-relaxed">
+                Centralized CMS authority: manage user roles, adjust institutional risk equation thresholds, broadcast official announcements, and inspect tamper-evident audit logs.
+              </p>
+            </div>
+          )}
+          {activeRole === 'dean' && (
+            <div className="space-y-3">
+              <h3 className="text-xl font-bold text-white">Division Telemetry & Ingestion</h3>
+              <p className="text-xs sm:text-sm text-[#C8BEB2] leading-relaxed">
+                Department-wide macro telemetry: evaluate attrition velocity across majors and batch-ingest historical attendance or exam records via validated CSV upload.
+              </p>
+            </div>
+          )}
+          {activeRole === 'faculty' && (
+            <div className="space-y-3">
+              <h3 className="text-xl font-bold text-white">Mentorship & What-If Recovery</h3>
+              <p className="text-xs sm:text-sm text-[#C8BEB2] leading-relaxed">
+                360 student dossiers: simulate recovery scenarios with students during office hours and assign accountable remedial intervention contracts.
+              </p>
+            </div>
+          )}
+          {activeRole === 'student' && (
+            <div className="space-y-3">
+              <h3 className="text-xl font-bold text-white">Confidential Student Portal</h3>
+              <p className="text-xs sm:text-sm text-[#C8BEB2] leading-relaxed">
+                Full transparency into personal standing: track attendance quotas down to individual lecture hours and review faculty recommendations privately.
+              </p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ============================================================ */}
+      {/* BOTTOM CTA & FOOTER */}
+      {/* ============================================================ */}
+      <footer className="max-w-7xl mx-auto mt-20 sm:mt-28 px-4 sm:px-6 pt-10 border-t border-white/10 text-xs font-mono text-white/50">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-8">
           <div className="flex items-center gap-2.5">
-            <div className="w-6 h-6 rounded bg-academic-600 flex items-center justify-center text-oxford-950 font-bold">
-              <GraduationCap className="w-3.5 h-3.5 text-oxford-950" />
+            <div className="w-7 h-7 rounded-lg bg-white flex items-center justify-center text-[#2C2621]">
+              <GraduationCap className="w-4 h-4 text-[#2C2621]" />
             </div>
-            <span className="font-bold text-white">Student360 Academic Intelligence</span>
+            <span className="font-bold text-white text-sm">Student360 Platform</span>
           </div>
-          <div className="text-center sm:text-right text-[11px] text-slate-500">
-            <span>Apex Institute of Higher Technology • Academic Year 2024-2025</span>
-            <span className="block mt-0.5">Aligned with Institutional Accreditation & Student Retention Standards</span>
+          <div className="flex items-center gap-5 text-white/70">
+            <Link to="/login" className="hover:text-white transition-colors">Sign In</Link>
+            <Link to="/register" className="hover:text-white transition-colors">Student Portal</Link>
+            <a href="https://github.com/Psyodrz/Student-360" target="_blank" rel="noreferrer" className="hover:text-white transition-colors flex items-center gap-1">
+              GitHub <ArrowUpRight className="w-3 h-3" />
+            </a>
           </div>
+        </div>
+        <div className="text-center sm:text-left text-[11px] text-white/40 pb-6">
+          &copy; 2024–2026 Student360 System • Apex Institute of Higher Technology • All Rights Reserved.
         </div>
       </footer>
+
     </div>
   );
 }
